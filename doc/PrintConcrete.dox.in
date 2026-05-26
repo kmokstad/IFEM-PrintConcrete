@@ -1,0 +1,30 @@
+// $Id$
+//==============================================================================
+//!
+//! \file PrintConcrete.dox
+//!
+//! \date May 26 2026
+//!
+//! \author Knut Morten Okstad / SINTEF
+//!
+//! \brief File containing the Main Page of the IFEM-PrintConcrete documentation.
+//!
+//==============================================================================
+
+/*! \mainpage Isogeometric FEM application for 3D printing of concrete
+
+\author Knut Morten Okstad, SINTEF Digital, Trondheim
+
+\section intro Introduction
+This is a tailored nonlinear quasi-static solid mechanics application for
+simulating 3D printing of concrete structures,
+built on top of the FiniteDeformation library of the IFEM-Elasticity package.
+
+IFEM is an object-oriented toolbox for implementing isogeometric finite element
+solvers for linear and nonlinear partial differential equations.
+The toolbox is developed through the ICADA project at SINTEF ICT, Trondheim.
+The purpose of this code is to serve as a common base for isogeometric
+PDE-simulators, using splines and NURBS as basis functions in the finite element
+formulations. The toolbox contains methods for doing linear and non-linear,
+stationary and dynamic time-domain analyses, as well as eigenvalue analyses.
+*/
