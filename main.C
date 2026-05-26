@@ -1,202 +1,142 @@
 // $Id$
 //==============================================================================
 //!
-//! \file main_NonLinEl.C
+//! \file main.C
 //!
-//! \date Jun 1 2010
+//! \date May 26 2026
 //!
 //! \author Knut Morten Okstad / SINTEF
 //!
-//! \brief Main program for the isogeometric finite deformation solver.
+//! \brief Main program for the isogeometric simulator of 3D concrete printing.
 //!
 //==============================================================================
 
 #include "SIMFiniteDefEl.h"
 #include "SIM2D.h"
 #include "SIM3D.h"
-#include "HHTSIM.h"
-#include "GenAlphaSIM.h"
-#include "NewmarkNLSIM.h"
-#include "NewmarkDriver.h"
-#include "ArcLengthDriver.h"
-#include "Elasticity.h"
+#include "NonlinearDriver.h"
 #include "HDF5Writer.h"
-#include "Utilities.h"
+#include "HDF5Restart.h"
 #include "Profiler.h"
-#include "VTF.h"
 #include "NLargs.h"
+#include "IFEM.h"
 #include <filesystem>
-#include <fstream>
 #include <cstdlib>
 #include <cstring>
-#include <cctype>
-
-#ifndef USE_OPENMP
-extern std::vector<int> dbgElms; //!< List of elements for additional output
-#endif
 
 
 /*!
   \brief Reads the input file and invokes the main simulation driver.
 */
 
-template<class Simulator>
-int runSimulator (Simulator& simulator, SIMoutput* model, char* infile,
-                  const std::vector<int>& ignoredPatches, bool fixDup,
-                  char printMax, double dtDump, double stopTime,
-                  double zero_tol, int outPrec, bool dumpNodeMap)
+int runSimulator (SIMoutput& model, char* infile, int form,
+                  double stopTime, double zero_tol, int outPrec)
 {
+  NonlinearDriver simulator(model, form == SIM::LINEAR);
+
   utl::profiler->start("Model input");
-
-  std::ostream* oss = nullptr;
-
-  // Lambda function cleaning heap-allocated objects before exiting.
-  auto&& exitSim = [oss,model](int status)
-  {
-    delete oss;
-    delete model;
-    return status;
-  };
 
   // Read in solver and model definitions
   if (!simulator.read(infile))
-    return exitSim(1);
+    return 1;
 
   // Let the stop time specified on command-line override input file setting
   if (stopTime > 0.0)
     simulator.setStopTime(stopTime);
 
-  model->opt.print(IFEM::cout,true) << std::endl;
+  model.opt.print(IFEM::cout,true) << std::endl;
   simulator.printProblem();
 
   utl::profiler->stop("Model input");
 
   // Preprocess the model and establish data structures for the algebraic system
-  if (!model->preprocess(ignoredPatches,fixDup))
-    return exitSim(2);
+  if (!model.preprocess())
+    return 2;
 
-  if (model->opt.format >= 0)
+  if (model.opt.format >= 0)
   {
     // Save FE model to VTF file for visualization
-    if (model->getNoSpaceDim() < 3)
-      model->opt.nViz[2] = 1;
+    if (model.getNoSpaceDim() < 3)
+      model.opt.nViz[2] = 1;
     if (!simulator.saveModel(infile))
-      return exitSim(4);
-    else if (stopTime < 0.0 && !model->writeGlvStep(1))
-      return exitSim(4);
-  }
-
-  if (dtDump < 0.0)
-  {
-    // Write (refined?) model to g2-file
-    strcat(strtok(infile,"."),".g2");
-    IFEM::cout <<"\nWriting updated g2-file "<< infile << std::endl;
-    std::ofstream osg(infile);
-    model->dumpGeometry(osg);
-
-    // Open ASCII file for solution dump
-    if (stopTime >= 0.0)
-    {
-      strcat(strtok(infile,"."),".sol");
-      oss = new std::ofstream(infile);
-      *oss <<"#NPoints="<< model->getNoNodes() <<"\n";
-    }
+      return 4;
+    else if (stopTime < 0.0 && !model.writeGlvStep(1))
+      return 4;
   }
 
   if (stopTime < 0.0)
-    return exitSim(0); // model check
+    return 0; // model check
 
-  size_t numPatch = 1;
-  const Elasticity* lelp;
-  if (!(lelp = dynamic_cast<const Elasticity*>(model->getProblem())))
-    printMax = false;
-  else if (printMax == 'P')
-    numPatch = model->getFEModel().size();
-  if (printMax)
-    const_cast<Elasticity*>(lelp)->initMaxVals(numPatch);
-
-  if (model->opt.discretization < ASM::Spline && !model->opt.hdf5.empty())
+  if (model.opt.discretization < ASM::Spline && !model.opt.hdf5.empty())
   {
     IFEM::cout <<"\n ** HDF5 output is available for spline discretization only"
                <<". Deactivating...\n"<< std::endl;
-    model->opt.hdf5.clear();
+    model.opt.hdf5.clear();
   }
 
   // If more than one projection method is specified, use only the first one
   const char* projectType = nullptr;
-  if (!model->opt.project.empty())
-    projectType = model->opt.project.begin()->second.c_str();
+  if (!model.opt.project.empty())
+    projectType = model.opt.project.begin()->second.c_str();
 
   // Define the initial configuration
-  NewmarkSIM* dynSim = dynamic_cast<NewmarkSIM*>(&simulator);
   simulator.initPrm();
-  simulator.initSol(dynSim ? 3 : 2);
+  simulator.initSol(2);
   simulator.initProj(projectType ? 1 : 0);
 
   // Initialize the linear equation solver
-  if (!simulator.initEqSystem(!dynSim, dynSim ? 0 : model->getNoFields()))
-    return exitSim(3);
+  if (!simulator.initEqSystem(true,model.getNoFields()))
+    return 3;
 
   // Load solution state from serialized data in case of restart
   if (!simulator.checkForRestart())
-    return exitSim(5);
+    return 5;
 
   // Open HDF5 result database
   DataExporter* writer = nullptr;
-  if (model->opt.dumpHDF5(infile))
+  if (model.opt.dumpHDF5(infile))
   {
-    const std::string& fileName = model->opt.hdf5;
+    const std::string& fileName = model.opt.hdf5;
     IFEM::cout <<"\nWriting HDF5 file "<< fileName <<".hdf5"<< std::endl;
 
     // Include secondary results only if no projection has been requested.
     // The secondary results will be projected anyway, but without the
     // nodal averaging across patch boundaries in case of multiple patches.
     int results = DataExporter::PRIMARY;
-    if (!projectType && !model->opt.pSolOnly)
+    if (!projectType && !model.opt.pSolOnly)
       results |= DataExporter::SECONDARY;
-    if (dumpNodeMap)
-      results |= DataExporter::L2G_NODE;
-    if (model->opt.saveNorms)
+    if (model.opt.saveNorms)
       results |= DataExporter::NORMS;
-    if (model->hasElementActivator())
+    if (model.hasElementActivator())
       results |= DataExporter::ELEMENT_MASK;
 
-    writer = new DataExporter(true,model->opt.saveInc);
-    writer->registerWriter(new HDF5Writer(fileName,model->getProcessAdm()));
+    writer = new DataExporter(true,model.opt.saveInc);
+    writer->registerWriter(new HDF5Writer(fileName,model.getProcessAdm()));
     writer->registerField("u","solution",DataExporter::SIM,results);
-    writer->setFieldValue("u",model,&simulator.getSolution(),
+    writer->setFieldValue("u",&model,&simulator.getSolution(),
                           nullptr,simulator.getNorms());
-    if (dynSim)
-    {
-      writer->registerField("v","velocity",DataExporter::SIM,
-                            -DataExporter::PRIMARY);
-      writer->setFieldValue("v",model,&dynSim->getVelocity());
-      writer->registerField("a","acceleration",DataExporter::SIM,
-                            -DataExporter::PRIMARY);
-      writer->setFieldValue("a",model,&dynSim->getAcceleration());
-    }
     if (projectType)
     {
       writer->registerField("sigma","projected",DataExporter::SIM,
                             DataExporter::SECONDARY,projectType);
-      writer->setFieldValue("sigma",model,simulator.getProjection());
+      writer->setFieldValue("sigma",&model,simulator.getProjection());
     }
   }
 
   HDF5Restart* restart = nullptr;
-  if (model->opt.restartInc > 0)
+  if (model.opt.restartInc > 0)
   {
     std::string hdf5file(infile);
-    if (!model->opt.hdf5.empty())
-      hdf5file = model->opt.hdf5 + "_restart";
+    if (!model.opt.hdf5.empty())
+      hdf5file = model.opt.hdf5 + "_restart";
     else
       hdf5file.replace(hdf5file.find_last_of('.'),std::string::npos,"_restart");
     const size_t idot = hdf5file.size();
     for (int i = 1; std::filesystem::exists(hdf5file + ".hdf5"); i++)
       hdf5file = hdf5file.substr(0,idot) + std::to_string(i);
     IFEM::cout <<"\nWriting HDF5 file "<< hdf5file <<".hdf5"<< std::endl;
-    restart = new HDF5Restart(hdf5file,model->getProcessAdm(),
-                              model->opt.restartInc);
+    restart = new HDF5Restart(hdf5file,model.getProcessAdm(),
+                              model.opt.restartInc);
   }
 
   if (projectType)
@@ -204,14 +144,10 @@ int runSimulator (Simulator& simulator, SIMoutput* model, char* infile,
                <<"\nsmoothed secondary solution fields."<< std::endl;
 
   // Now invoke the main solution driver
-  utl::LogStream log(oss);
-  int status = simulator.solveProblem(writer, restart, oss ? &log : nullptr,
-                                      printMax, std::abs(dtDump),
-                                      zero_tol, outPrec);
-
+  int status = simulator.solveProblem(writer,restart,zero_tol,outPrec);
   delete writer;
   delete restart;
-  return exitSim(status);
+  return status;
 }
 
 
@@ -227,8 +163,6 @@ int runSimulator (Simulator& simulator, SIMoutput* model, char* infile,
   \arg -superlu : Use the sparse SuperLU equation solver
   \arg -samg :    Use the sparse algebraic multi-grid equation solver
   \arg -petsc :   Use equation solver from PETSc library
-  \arg -lag : Use Lagrangian basis functions instead of splines/NURBS
-  \arg -spec : Use Spectral basis functions instead of splines/NURBS
   \arg -nGauss \a n : Number of Gauss points over a knot-span in each direction
   \arg -vtf \a format : VTF-file format (-1=NONE, 0=ASCII, 1=BINARY)
   \arg -nviz \a nviz : Number of visualization points over each knot-span
@@ -236,44 +170,32 @@ int runSimulator (Simulator& simulator, SIMoutput* model, char* infile,
   \arg -nv \a nv : Number of visualization points per knot-span in v-direction
   \arg -nw \a nw : Number of visualization points per knot-span in w-direction
   \arg -hdf5 : Write primary and projected secondary solution to HDF5 file
-  \arg -printMax : Print out maximum point-wise stresses
-  \arg -printMaxPatch : Print out patch-wise maximum point-wise stresses
   \arg -saveInc \a dtSave : Time increment between each result save to VTF/HDF5
-  \arg -dumpInc \a dtDump [raw] : Time increment between each solution dump
-  \arg -dumpNodMap : Dump Local-to-global node number mapping to HDF5
   \arg -outPrec \a nDigit : Number of digits in solution component printout
   \arg -ztol \a eps : Zero tolerance for printing of solution norms
-  \arg -ignore \a p1, \a p2, ... : Ignore these patches in the analysis
   \arg -check : Data check only, read model and output to VTF (no solution)
-  \arg -checkRHS : Check that the patches are modelled in a right-hand system
-  \arg -fixDup : Resolve co-located nodes by merging them into a single node
   \arg -stopTime \a t : Run simulation only up to specified stop time
   \arg -2D : Use two-parametric simulation driver (plane stress)
   \arg -2Dpstrain : Use two-parametric simulation driver (plane strain)
-  \arg -2Daxisymm : Use two-parametric simulation driver (axi-symmetric solid)
   \arg -UL : Use updated Lagrangian formulation with nonlinear material
   \arg -MX<pord> : Mixed formulation with internal discontinuous pressure
   \arg -mixed : Mixed formulation with continuous pressure and volumetric change
   \arg -Mixed : Same as -mixed, but use C^(p-1) continuous displacement basis
   \arg -Fbar<nvp> : Use the F-bar formulation
   \arg -linear : Do a linear analysis only (no iterations)
-  \arg -free : Ignore all boundary conditions (use in dynamics analysis)
-  \arg -adap : Use adaptive simulation driver with LR-splines discretization
 */
 
 int main (int argc, char** argv)
 {
   Profiler prof(argv[0]);
 
-  std::vector<int> ignoredPatches;
   int outPrec = 3;
-  double dtDump = 0.0;
   double zero_tol = 1.0e-8;
   double stopTime = 0.0;
   char* infile = nullptr;
   NLargs args;
 
-  IFEM::Init(argc,argv,"Finite Deformation Nonlinear solver");
+  IFEM::Init(argc,argv,"Concrete 3D printing simulator");
 
   for (int i = 1; i < argc; i++)
     if (argv[i] == infile || args.parseArg(argv[i]))
@@ -284,43 +206,17 @@ int main (int argc, char** argv)
       outPrec = atoi(argv[++i]);
     else if (!strcmp(argv[i],"-ztol") && i < argc-1)
       zero_tol = atof(argv[++i]);
-    else if (!strcmp(argv[i],"-dumpInc") && i < argc-1)
-    {
-      dtDump = atof(argv[++i]);
-      if (++i < argc && !strcmp(argv[i],"raw"))
-	dtDump *= -1;
-      else
-	--i;
-    }
-#ifndef USE_OPENMP
-    else if (!strcmp(argv[i],"-dbgElm"))
-      while (i < argc-1 && isdigit(argv[i+1][0]))
-	utl::parseIntegers(dbgElms,argv[++i]);
-#endif
-    else if (!strcmp(argv[i],"-ignore"))
-      while (i < argc-1 && isdigit(argv[i+1][0]))
-	utl::parseIntegers(ignoredPatches,argv[++i]);
-    else if (!strcmp(argv[i],"-vox") && i < argc-1)
-      VTF::vecOffset[0] = atof(argv[++i]);
-    else if (!strcmp(argv[i],"-voy") && i < argc-1)
-      VTF::vecOffset[1] = atof(argv[++i]);
-    else if (!strcmp(argv[i],"-voz") && i < argc-1)
-      VTF::vecOffset[2] = atof(argv[++i]);
-    else if (!strcmp(argv[i],"-free"))
-      SIMbase::ignoreDirichlet = true;
     else if (!strcmp(argv[i],"-stopTime") && i < argc-1)
       stopTime = atof(argv[++i]);
     else if (!strcmp(argv[i],"-check"))
       stopTime = -1.0;
-    else if (!infile)
+    else if (!infile && strcasestr(argv[i],".xinp"))
     {
       infile = argv[i];
-      if (strcasestr(infile,".xinp"))
-      {
-        if (!args.readXML(infile,false))
-          return 1;
+      if (args.readXML(infile,false))
         i = 0; // start over and let command-line options override input file
-      }
+      else
+        return 1; // pre-parse failure
     }
     else
       std::cerr <<"  ** Unknown option ignored: "<< argv[i] << std::endl;
@@ -329,117 +225,37 @@ int main (int argc, char** argv)
   {
     std::cout <<"usage: "<< argv[0]
 	      <<" <inputfile> [-dense|-spr|-superlu[<nt>]|-samg|-petsc]\n"
-	      <<"       [-lag|-spec] [-2D[pstrain|axis]] [-nGauss <n>]\n"
-	      <<"       [-UL|-MX[<p>]|-[M|m]ixed|-Fbar<nvp>]\n"
-	      <<"       [-linear] [-adap] [-arclen|-HHT|-GA] [-free]\n"
-	      <<"       [-hdf5 [<filename>] [-dumpNodeMap]]\n"
-	      <<"       [-vtf <format> [-nviz <nviz>]"
-	      <<" [-nu <nu>] [-nv <nv>] [-nw <nw>]]\n      "
-	      <<" [-saveInc <dtSave>] [-dumpInc <dtDump> [raw]]"
-	      <<" [-outPrec <nd>]\n       [-ztol <eps>] [-ignore <p1> <p2> ...]"
-	      <<" [-fixDup] [-checkRHS] [-check]\n"
-	      <<"       [-printMax[Patch]] [-stopTime <t>]\n";
+	      <<"       [-2D[pstrain] [-nGauss <n>]"
+	      <<" [-UL|-MX[<p>]|-[M|m]ixed|-Fbar<nvp>] [-linear]\n"
+	      <<"       [-hdf5 [<filename>] [-vtf <format> [-nviz <nviz>]"
+	      <<" [-nu <nu>] [-nv <nv>] [-nw <nw>]]\n"
+	      <<"       [-saveInc <dtSave>] [-check] [-stopTime <t>]"
+              <<" [-outPrec <nd>] [-ztol <eps>]\n";
     return 0;
   }
 
-  if (IFEM::getOptions().discretization == ASM::Spline && args.adaptive)
-    IFEM::getOptions().discretization = ASM::LRSpline;
-  else if (IFEM::getOptions().discretization < ASM::LRSpline)
-    args.adaptive = false;
-
   IFEM::cout <<"\nInput file: "<< infile;
   IFEM::getOptions().print(IFEM::cout);
-  if (dtDump > 0.0)
-    IFEM::cout <<"\nTime between each primary solution dump: "<< dtDump;
-  if (SIMbase::ignoreDirichlet)
-    IFEM::cout <<"\nSpecified boundary conditions are ignored";
-  if (args.fixDup)
-    IFEM::cout <<"\nCo-located nodes will be merged";
-  if (args.checkRHS)
-    IFEM::cout <<"\nCheck that each patch has a right-hand coordinate system";
-  if (!ignoredPatches.empty())
-  {
-    IFEM::cout <<"\nIgnored patches:";
-    for (int ip : ignoredPatches) IFEM::cout <<" "<< ip;
-  }
   if (outPrec != 3)
     IFEM::cout <<"\nNorm- and component output precision: "<< outPrec;
-  else if (args.algor > STATIC)
-    outPrec = 0;
   if (zero_tol != 1.0e-8)
     IFEM::cout <<"\nNorm output zero tolerance: "<< zero_tol;
   IFEM::cout << std::endl;
 
-  utl::profiler->start("Model input");
+  std::vector<int> options;
+  if (args.pOrd >= 0)
+    options = { args.form, args.pOrd };
+  else if (args.form >= 0)
+    options = { args.form };
 
-  bool linear = !args.options.empty() && args.options.front() == SIM::LINEAR;
-
-  SIMoutput* model;
-  if (linear && args.algor > STATIC)
+  if (args.dim == 2)
   {
-    // Create the linear continuum model
-    if (args.twoD)
-      model = new SIMElasticity<SIM2D>(args.checkRHS);
-    else
-      model = new SIMElasticity<SIM3D>(args.checkRHS);
-
-    if (args.algor == GENALPHA)
-    {
-      // Invoke the linear generalized alpha time integration
-      NewmarkDriver<GenAlphaSIM> simulator(*model);
-      return runSimulator(simulator,model,infile,ignoredPatches,args.fixDup,
-                          args.printMax,dtDump,stopTime,zero_tol,outPrec,
-                          args.dNodeMap);
-    }
-
-    // Invoke the linear Newmark time integration
-    NewmarkDriver<NewmarkSIM> simulator(*model);
-    return runSimulator(simulator,model,infile,ignoredPatches,args.fixDup,
-                        args.printMax,dtDump,stopTime,zero_tol,outPrec,
-                        args.dNodeMap);
+    SIMFiniteDefEl<SIM3D> model(false,options);
+    return runSimulator(model,infile,args.form,stopTime,zero_tol,outPrec);
   }
-
-  // Create the nonlinear continuum model
-  if (args.twoD)
-    model = new SIMFiniteDefEl<SIM2D>(args.checkRHS,args.options);
   else
-    model = new SIMFiniteDefEl<SIM3D>(args.checkRHS,args.options);
-
-  switch (args.algor) {
-  case STATIC:
   {
-    // Invoke the nonlinear quasi-static solver with fixed load increments
-    NonlinearDriver simulator(*model,linear,args.adaptive);
-    return runSimulator(simulator,model,infile,ignoredPatches,args.fixDup,
-                        args.printMax,dtDump,stopTime,zero_tol,outPrec,
-                        args.dNodeMap);
-  }
-  case ARCLEN:
-  {
-    // Invoke the nonlinear quasi-static arc-length solver
-    ArcLengthDriver simulator(*model,args.adaptive);
-    return runSimulator(simulator,model,infile,ignoredPatches,args.fixDup,
-                        args.printMax,dtDump,stopTime,zero_tol,outPrec,
-                        args.dNodeMap);
-  }
-  case NEWHHT:
-  {
-    // Invoke the nonlinear HHT time integration
-    NewmarkDriver<HHTSIM> simulator(*model);
-    return runSimulator(simulator,model,infile,ignoredPatches,args.fixDup,
-                        args.printMax,dtDump,stopTime,zero_tol,outPrec,
-                        args.dNodeMap);
-  }
-  case OLDHHT:
-  case GENALPHA:
-  {
-    // Invoke the nonlinear Newmark time integration
-    NewmarkDriver<NewmarkNLSIM> simulator(*model);
-    return runSimulator(simulator,model,infile,ignoredPatches,args.fixDup,
-                        args.printMax,dtDump,stopTime,zero_tol,outPrec,
-                        args.dNodeMap);
-  }
-  default:
-    return -1; // Unknown driver
+    SIMFiniteDefEl<SIM2D> model(false,options);
+    return runSimulator(model,infile,args.form,stopTime,zero_tol,outPrec);
   }
 }
