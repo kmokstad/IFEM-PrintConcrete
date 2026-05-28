@@ -35,10 +35,12 @@ ifem_add_application(
   NAME
     PrintConcrete
   SOURCES
-    main.C
-    NLargs.C
+    src/main.C
+    src/SIM3DPrinter.C
+    src/DruckerPrager.C
   HEADERS
-    NLargs.h
+    src/SIM3DPrinter.h
+    src/DruckerPrager.h
   LIBRARIES
     IFEM::FiniteDeformation
 )

@@ -11,14 +11,14 @@
 //!
 //==============================================================================
 
-#include "SIMFiniteDefEl.h"
-#include "SIM2D.h"
+#include "SIM3DPrinter.h"
 #include "SIM3D.h"
+#include "SIM2D.h"
+#include "SIMargsBase.h"
 #include "NonlinearDriver.h"
 #include "HDF5Writer.h"
 #include "HDF5Restart.h"
 #include "Profiler.h"
-#include "NLargs.h"
 #include "IFEM.h"
 #include <filesystem>
 #include <cstdlib>
@@ -29,10 +29,10 @@
   \brief Reads the input file and invokes the main simulation driver.
 */
 
-int runSimulator (SIMoutput& model, char* infile, int form,
+int runSimulator (SIMoutput& model, char* infile,
                   double stopTime, double zero_tol, int outPrec)
 {
-  NonlinearDriver simulator(model, form == SIM::LINEAR);
+  NonlinearDriver simulator(model,false);
 
   utl::profiler->start("Model input");
 
@@ -176,13 +176,6 @@ int runSimulator (SIMoutput& model, char* infile, int form,
   \arg -check : Data check only, read model and output to VTF (no solution)
   \arg -stopTime \a t : Run simulation only up to specified stop time
   \arg -2D : Use two-parametric simulation driver (plane stress)
-  \arg -2Dpstrain : Use two-parametric simulation driver (plane strain)
-  \arg -UL : Use updated Lagrangian formulation with nonlinear material
-  \arg -MX<pord> : Mixed formulation with internal discontinuous pressure
-  \arg -mixed : Mixed formulation with continuous pressure and volumetric change
-  \arg -Mixed : Same as -mixed, but use C^(p-1) continuous displacement basis
-  \arg -Fbar<nvp> : Use the F-bar formulation
-  \arg -linear : Do a linear analysis only (no iterations)
 */
 
 int main (int argc, char** argv)
@@ -193,7 +186,7 @@ int main (int argc, char** argv)
   double zero_tol = 1.0e-8;
   double stopTime = 0.0;
   char* infile = nullptr;
-  NLargs args;
+  SIMargsBase args("finitedeformation");
 
   IFEM::Init(argc,argv,"Concrete 3D printing simulator");
 
@@ -224,12 +217,11 @@ int main (int argc, char** argv)
   if (!infile)
   {
     std::cout <<"usage: "<< argv[0]
-	      <<" <inputfile> [-dense|-spr|-superlu[<nt>]|-samg|-petsc]\n"
-	      <<"       [-2D[pstrain] [-nGauss <n>]"
-	      <<" [-UL|-MX[<p>]|-[M|m]ixed|-Fbar<nvp>] [-linear]\n"
-	      <<"       [-hdf5 [<filename>] [-vtf <format> [-nviz <nviz>]"
-	      <<" [-nu <nu>] [-nv <nv>] [-nw <nw>]]\n"
-	      <<"       [-saveInc <dtSave>] [-check] [-stopTime <t>]"
+              <<" <inputfile> [-dense|-spr|-superlu[<nt>]|-samg|-petsc]\n"
+              <<"       [-2D] [-nGauss <n>] [-hdf5 [<filename>]]\n"
+              <<"       [-vtf <format> [-nviz <nviz>]"
+              <<" [-nu <nu>] [-nv <nv>] [-nw <nw>]]\n"
+              <<"       [-saveInc <dtSave>] [-check] [-stopTime <t>]"
               <<" [-outPrec <nd>] [-ztol <eps>]\n";
     return 0;
   }
@@ -242,20 +234,14 @@ int main (int argc, char** argv)
     IFEM::cout <<"\nNorm output zero tolerance: "<< zero_tol;
   IFEM::cout << std::endl;
 
-  std::vector<int> options;
-  if (args.pOrd >= 0)
-    options = { args.form, args.pOrd };
-  else if (args.form >= 0)
-    options = { args.form };
-
   if (args.dim == 2)
   {
-    SIMFiniteDefEl<SIM3D> model(false,options);
-    return runSimulator(model,infile,args.form,stopTime,zero_tol,outPrec);
+    SIM3DPrinter<SIM2D> model;
+    return runSimulator(model,infile,stopTime,zero_tol,outPrec);
   }
   else
   {
-    SIMFiniteDefEl<SIM2D> model(false,options);
-    return runSimulator(model,infile,args.form,stopTime,zero_tol,outPrec);
+    SIM3DPrinter<SIM3D> model;
+    return runSimulator(model,infile,stopTime,zero_tol,outPrec);
   }
 }
