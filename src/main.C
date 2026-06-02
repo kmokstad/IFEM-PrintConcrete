@@ -53,19 +53,13 @@ int runSimulator (SIMoutput& model, char* infile,
   if (!model.preprocess())
     return 2;
 
-  if (model.opt.format >= 0)
-  {
-    // Save FE model to VTF file for visualization
-    if (model.getNoSpaceDim() < 3)
-      model.opt.nViz[2] = 1;
-    if (!simulator.saveModel(infile))
-      return 4;
-    else if (stopTime < 0.0 && !model.writeGlvStep(1))
-      return 4;
-  }
+  // Open VTF file for visualization
+  if (!model.openGlv(infile))
+    return 4;
 
-  if (stopTime < 0.0)
-    return 0; // model check
+  if (stopTime < 0.0) // model check
+    // Save FE model to VTF file for visualization
+    return simulator.saveModel(nullptr) && model.writeGlvStep(1) ? 0 : 4;
 
   if (model.opt.discretization < ASM::Spline && !model.opt.hdf5.empty())
   {
