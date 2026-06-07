@@ -15,6 +15,7 @@
 #include "SIM3D.h"
 #include "SIM2D.h"
 #include "SIMargsBase.h"
+#include "ASMbase.h"
 #include "NonlinearDriver.h"
 #include "HDF5Writer.h"
 #include "HDF5Restart.h"
@@ -161,6 +162,7 @@ int runSimulator (SIMoutput& model, char* infile,
   \arg -samg :    Use the sparse algebraic multi-grid equation solver
   \arg -petsc :   Use equation solver from PETSc library
   \arg -nGauss \a n : Number of Gauss points over a knot-span in each direction
+  \arg -incnl2 : Include neighboors to newly active elements in L2-projection
   \arg -vtf \a format : VTF-file format (-1=NONE, 0=ASCII, 1=BINARY)
   \arg -nviz \a nviz : Number of visualization points over each knot-span
   \arg -nu \a nu : Number of visualization points per knot-span in u-direction
@@ -192,6 +194,8 @@ int main (int argc, char** argv)
       ; // ignore the input file on the second pass
     else if (SIMoptions::ignoreOldOptions(argc,argv,i))
       ; // ignore the obsolete option
+    else if (!strcmp(argv[i],"-incnl2"))
+      ASM::includeNeighbor_L2 = true;
     else if (!strcmp(argv[i],"-outPrec") && i < argc-1)
       outPrec = atoi(argv[++i]);
     else if (!strcmp(argv[i],"-ztol") && i < argc-1)
@@ -214,7 +218,7 @@ int main (int argc, char** argv)
   {
     std::cout <<"usage: "<< argv[0]
               <<" <inputfile> [-dense|-spr|-superlu[<nt>]|-samg|-petsc]\n"
-              <<"       [-2D] [-nGauss <n>] [-hdf5 [<filename>]]\n"
+              <<"       [-2D] [-nGauss <n>] [-incnl2] [-hdf5 [<filename>]]\n"
               <<"       [-vtf <format> [-nviz <nviz>]"
               <<" [-nu <nu>] [-nv <nv>] [-nw <nw>]]\n"
               <<"       [-saveInc <dtSave>] [-check] [-stopTime <t>]"
