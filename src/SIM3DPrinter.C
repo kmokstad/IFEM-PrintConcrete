@@ -140,8 +140,11 @@ SIM3DPrinter<Dim>::parseMaterial (const tinyxml2::XMLElement* elem)
 template<class Dim>
 bool SIM3DPrinter<Dim>::printProblem () const
 {
+  if (!this->SIMFiniteDefEl<Dim>::printProblem())
+    return false;
+
   IFEM::cout <<"3D printing simulator"<< std::endl;
-  return this->SIMFiniteDefEl<Dim>::printProblem();
+  return true;
 }
 
 
