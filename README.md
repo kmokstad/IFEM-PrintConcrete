@@ -1,5 +1,3 @@
-# IFEM PrintConcrete
-
 ## Introduction
 
 This is a simulator for 3D printing of concrete structures,
@@ -27,11 +25,11 @@ The build system uses sibling directory logic to locate the IFEM-Elasticity modu
 
 To compile, first navigate to the root catalogue `<App root>`.
 
-1. `cd IFEM-PrintConcrete`
-2. `mkdir Release`
-3. `cd Release`
-5. `cmake .. -DCMAKE_BUILD_TYPE=Release`
-6. `make`
+    cd IFEM-PrintConcrete
+    mkdir Release
+    cd Release
+    cmake .. -DCMAKE_BUILD_TYPE=Release
+    make
 
 This will compile the libraries and the PrintConcrete application.
 The executable can be found in the 'bin' sub-folder.
