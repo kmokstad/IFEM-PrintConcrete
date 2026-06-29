@@ -59,7 +59,7 @@ int runSimulator (SIMoutput& model, char* infile,
 
   if (stopTime < 0.0) // model check
     // Save FE model to VTF file for visualization
-    return simulator.saveModel(nullptr) && model.writeGlvStep(1) ? 0 : 4;
+    return simulator.saveModel() && model.writeGlvStep(1) ? 0 : 4;
 
   if (model.opt.discretization < ASM::Spline && !model.opt.hdf5.empty())
   {
