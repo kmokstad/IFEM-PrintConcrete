@@ -86,8 +86,15 @@ int runSimulator (SIMoutput& model, char* infile,
   if (!simulator.checkForRestart())
     return 5;
 
+  // Helper struct cleaning the heap-allocated objects before exiting
+  struct HeapObjects
+  {
+    DataExporter* writer = nullptr;
+    HDF5Restart* restart = nullptr;
+    ~HeapObjects() { delete writer; delete restart; }
+  } _my;
+
   // Open HDF5 result database
-  DataExporter* writer = nullptr;
   if (model.opt.dumpHDF5(infile))
   {
     const std::string& fileName = model.opt.hdf5;
@@ -104,20 +111,19 @@ int runSimulator (SIMoutput& model, char* infile,
     if (model.hasElementActivator())
       results |= DataExporter::ELEMENT_MASK;
 
-    writer = new DataExporter(true,model.opt.saveInc);
-    writer->registerWriter(new HDF5Writer(fileName,model.getProcessAdm()));
-    writer->registerField("u","solution",DataExporter::SIM,results);
-    writer->setFieldValue("u",&model,&simulator.getSolution(),
-                          nullptr,simulator.getNorms());
+    _my.writer = new DataExporter(true,model.opt.saveInc);
+    _my.writer->registerWriter(new HDF5Writer(fileName,model.getProcessAdm()));
+    _my.writer->registerField("u","solution",DataExporter::SIM,results);
+    _my.writer->setFieldValue("u",&model,&simulator.getSolution(),
+                              nullptr,simulator.getNorms());
     if (projectType)
     {
-      writer->registerField("sigma","projected",DataExporter::SIM,
-                            DataExporter::SECONDARY,projectType);
-      writer->setFieldValue("sigma",&model,simulator.getProjection());
+      _my.writer->registerField("sigma","projected",DataExporter::SIM,
+                                DataExporter::SECONDARY,projectType);
+      _my.writer->setFieldValue("sigma",&model,simulator.getProjection());
     }
   }
 
-  HDF5Restart* restart = nullptr;
   if (model.opt.restartInc > 0)
   {
     std::string hdf5file(infile);
@@ -129,8 +135,8 @@ int runSimulator (SIMoutput& model, char* infile,
     for (int i = 1; std::filesystem::exists(hdf5file + ".hdf5"); i++)
       hdf5file = hdf5file.substr(0,idot) + std::to_string(i);
     IFEM::cout <<"\nWriting HDF5 file "<< hdf5file <<".hdf5"<< std::endl;
-    restart = new HDF5Restart(hdf5file,model.getProcessAdm(),
-                              model.opt.restartInc);
+    _my.restart = new HDF5Restart(hdf5file,model.getProcessAdm(),
+                                  model.opt.restartInc);
   }
 
   if (projectType)
@@ -138,15 +144,12 @@ int runSimulator (SIMoutput& model, char* infile,
                <<"\nsmoothed secondary solution fields."<< std::endl;
 
   // Now invoke the main solution driver
-  int status = simulator.solveProblem(writer,restart,zero_tol,outPrec);
-  delete writer;
-  delete restart;
-  return status;
+  return simulator.solveProblem(_my.writer,_my.restart,zero_tol,outPrec);
 }
 
 
 /*!
-  \brief Main program for the isogeometric finite deformation solver.
+  \brief Main program for the isogeometric simulator of 3D concrete printing.
 
   The input to the program is specified through the following
   command-line arguments. The arguments may be given in arbitrary order.
@@ -197,9 +200,8 @@ int main (int argc, char** argv)
       stopTime = atof(argv[++i]);
     else if (!strcmp(argv[i],"-check"))
       stopTime = -1.0;
-    else if (!infile && strcasestr(argv[i],".xinp"))
+    else if (!infile && strcasestr(infile = argv[i],".xinp"))
     {
-      infile = argv[i];
       if (args.readXML(infile,false))
         i = 0; // start over and let command-line options override input file
       else
