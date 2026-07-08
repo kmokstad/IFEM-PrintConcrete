@@ -118,12 +118,13 @@ int DruckerPrager::getNoIntVariables () const
   int nvar = 1;
   if (elmOutp)
   {
-    if (yieldLimit) nvar++;
+    if (yieldLimit)
+      nvar += mySigma.dim() == 3 ? 2 : 1;
   }
   else
   {
     if (Eaging) nvar += 1;
-    if (yieldLimit) nvar += 2;
+    if (yieldLimit) nvar += 3;
   }
   return nvar;
 }
@@ -150,8 +151,8 @@ double DruckerPrager::getInternalVar (int idx, char* label, size_t) const
     return 0.0;
   }
 
-  if (elmOutp && idx == 2)
-    idx = 4; // Yield utilization
+  if (elmOutp && idx >= 2)
+    idx += 2; // Yield utilization
   else if (!elmOutp && idx > 1 && !Eaging)
     ++idx; // Skip Youngs modulus
 
@@ -214,6 +215,12 @@ double DruckerPrager::getInternalVar (int idx, char* label, size_t) const
       else
         return 100.0*DPstressC(mySigma)/((alpha+osqrt3)*sigy);
     }
+    break;
+  case 5:
+    if (label)
+      strcpy(label,"Yield ratio (s_zz/s_yield) compression");
+    else if (sigy > 0.0 && mySigma.dim() == 3 && mySigma(3,3) < 0.0)
+      return -100.0*mySigma(3,3)/sigy;
     break;
   }
 
