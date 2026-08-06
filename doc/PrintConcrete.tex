@@ -1,0 +1,44 @@
+\documentclass{beamer}
+%\usepackage[english]{babel}
+%\usepackage{graphicx}
+\usepackage{bm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{\Large PrintConcrete: Isogeometric FEM simulator \newline
+       for concrete 3D printing}
+\author{Knut Morten Okstad$^{\dag}$}
+
+\institute{$^\dag$ SINTEF Digital, Trondheim, Norway}
+
+\hypersetup{colorlinks=true,urlcolor=blue}
+\hypersetup{pdfauthor=Knut Morten Okstad}
+\hypersetup{pdfsubject=Overal description of the PrintConrete IFEM application}
+\hypersetup{pdfkeywords=FEM IGA Nonlinear-elasticity 3D-printing Concrete}
+
+\begin{document} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{\titlepage}
+
+\frame{\frametitle{The PrintConcrete IFEM simulator}
+  \begin{itemize}
+  \item Quasi-static nonlinear FE simulator of the elasticity PDE
+    $$
+    \nabla\bm{\sigma} + \bm{f} = \bm{0}
+    \quad\mbox{where}\quad \bm{\sigma} = \bm{C}(t):\bm{\varepsilon}(\bm{u})
+    $$
+    where $\bm{C}$ represents a time-dependent material tensor, \newline
+    and $\bm{f}$ consists of the gravity load.
+  \item The printing process is simulated by an element-birth feature in the solver,
+    i.e., the stiffness and and gravity loads for an element is set to zero
+    until the birth time of the element.
+  \item Material properties {\small (Young's modulus $E$ and yield stress limit $\sigma_y$)}
+    depend on the element age (time since element birth).
+  \item The nonlinear PDE is linarized based on an Updated Lagrange formulation,
+    and solved using Newton-Raphson iterations.% on each load increment.
+  \item Isogeometric analysis: Quadratic or cubic splines are used as basis functions
+    in the FE implementation.
+  \item The simulator is built on the IFEM-Elasticiy package \url{https://github.com/OPM/IFEM-Elasticity}.
+  \end{itemize}}
+
+\end{document} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
