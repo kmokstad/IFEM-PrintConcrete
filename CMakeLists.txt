@@ -37,9 +37,11 @@ ifem_add_application(
   SOURCES
     src/main.C
     src/SIM3DPrinter.C
+    src/NonlinearElasticityBirth.C
     src/DruckerPrager.C
   HEADERS
     src/SIM3DPrinter.h
+    src/NonlinearElasticityBirth.h
     src/DruckerPrager.h
   LIBRARIES
     IFEM::FiniteDeformation
