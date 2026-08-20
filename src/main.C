@@ -175,6 +175,7 @@ int runSimulator (SIMoutput& model, char* infile,
   \arg -check : Data check only, read model and output to VTF (no solution)
   \arg -stopTime \a t : Run simulation only up to specified stop time
   \arg -2D : Use two-parametric simulation driver (plane stress)
+  \arg -Fbirth : Use integrand with stress-free deformation gradient at birth
 */
 
 int main (int argc, char** argv)
@@ -184,6 +185,7 @@ int main (int argc, char** argv)
   int outPrec = 3;
   double zero_tol = 1.0e-8;
   double stopTime = 0.0;
+  bool useFbirth = false;
   char* infile = nullptr;
   SIMargsBase args("finitedeformation");
 
@@ -204,6 +206,8 @@ int main (int argc, char** argv)
       stopTime = atof(argv[++i]);
     else if (!strcmp(argv[i],"-check"))
       stopTime = -1.0;
+    else if (!strcmp(argv[i],"-Fbirth"))
+      useFbirth = true;
     else if (!infile && strcasestr(infile = argv[i],".xinp"))
     {
       if (args.readXML(infile,false))
@@ -222,7 +226,7 @@ int main (int argc, char** argv)
               <<"       [-vtf <format> [-nviz <nviz>]"
               <<" [-nu <nu>] [-nv <nv>] [-nw <nw>]]\n"
               <<"       [-saveInc <dtSave>] [-check] [-stopTime <t>]"
-              <<" [-outPrec <nd>] [-ztol <eps>]\n";
+              <<" [-Fbirth] [-outPrec <nd>] [-ztol <eps>]\n";
     return 0;
   }
 
@@ -236,12 +240,12 @@ int main (int argc, char** argv)
 
   if (args.dim == 2)
   {
-    SIM3DPrinter<SIM2D> model;
+    SIM3DPrinter<SIM2D> model(useFbirth);
     return runSimulator(model,infile,stopTime,zero_tol,outPrec);
   }
   else
   {
-    SIM3DPrinter<SIM3D> model;
+    SIM3DPrinter<SIM3D> model(useFbirth);
     return runSimulator(model,infile,stopTime,zero_tol,outPrec);
   }
 }

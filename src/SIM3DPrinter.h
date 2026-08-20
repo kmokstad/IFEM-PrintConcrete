@@ -28,20 +28,27 @@ class SIM3DPrinter : public SIMFiniteDefEl<Dim>
 {
 public:
   //! \brief The default constructor forwards to the parent class constructor.
-  SIM3DPrinter() : SIMFiniteDefEl<Dim>(false,{SIM::UPDATED_LAGRANGE}) {}
+  explicit SIM3DPrinter(bool fb = false)
+    : SIMFiniteDefEl<Dim>(false,{SIM::UPDATED_LAGRANGE}), useFbirth(fb) {}
 
   //! \brief Prints out problem-specific data to the log stream.
-  virtual bool printProblem() const;
+  bool printProblem() const override;
 
 protected:
   //! \brief Parses an element activation function.
   //! \param[in] func Function definition
   //! \param[in] type Function type
-  virtual IntFunc* parseElemActivator(const std::string& func,
-                                      const std::string& type) const;
+  IntFunc* parseElemActivator(const std::string& func,
+                              const std::string& type) const override;
   //! \brief Parses material data from an XML element.
   //! \param[in] elem The XML element to parse
-  virtual Material* parseMaterial(const tinyxml2::XMLElement* elem);
+  Material* parseMaterial(const tinyxml2::XMLElement* elem) override;
+
+  //! \brief Returns the actual integrand.
+  ElasticBase* getIntegrand() override;
+
+private:
+  bool useFbirth; //!< If \e true, use the NonlinearElasticityBirth integrand
 };
 
 #endif

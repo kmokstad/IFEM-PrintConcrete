@@ -12,8 +12,8 @@
 //==============================================================================
 
 #include "SIM3DPrinter.h"
+#include "NonlinearElasticityBirth.h"
 #include "DruckerPrager.h"
-#include "ElasticityUtils.h"
 
 #include "IFEM.h"
 #include "SIM2D.h"
@@ -125,15 +125,25 @@ SIM3DPrinter<Dim>::parseMaterial (const tinyxml2::XMLElement* elem)
     int code = this->parseMaterialSet(elem,SIMElasticity<Dim>::mVec.size());
     IFEM::cout <<"\tMaterial code "<< code;
 
-    Material* mat = new DruckerPrager(Dim::dimension,
-                                      !Elastic::planeStrain,
-                                      Elastic::axiSymmetry);
+    Material* mat = new DruckerPrager(Dim::dimension,true);
     mat->parse(elem);
     IFEM::cout << std::endl;
     return mat;
   }
   else
     return this->SIMFiniteDefEl<Dim>::parseMaterial(elem);
+}
+
+
+template<class Dim>
+ElasticBase* SIM3DPrinter<Dim>::getIntegrand ()
+{
+  if (Dim::myProblem || !useFbirth)
+    return this->SIMFiniteDefEl<Dim>::getIntegrand();
+
+  Dim::myProblem = new NonlinearElasticityBirth(Dim::dimension);
+
+  return dynamic_cast<ElasticBase*>(Dim::myProblem);
 }
 
 
