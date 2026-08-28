@@ -33,7 +33,7 @@
   </finitedeformation>
 
   <discretization>
-    <nGauss>3 4</nGauss>
+    <nGauss>3</nGauss>
   </discretization>
 
   <timestepping>

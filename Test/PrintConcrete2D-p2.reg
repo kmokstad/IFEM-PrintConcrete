@@ -44,15 +44,17 @@ Parsing <nonlinearsolver>
 Parsing <postprocessing>
   Parsing <vtfformat>
   Parsing <direct2nd>
+  Parsing <print_max>
 Parsing input file succeeded.
 Equation solver: 2
-Number of Gauss points: 3 4
+Number of Gauss points: 3
 Basis function values are precalculated but not cached
 Problem definition:
 NonlinearElasticityUL: Updated Lagrangian formulation
 Elasticity: 2D, gravity = 0 -9.81
 LinIsotropic: plane stress, E = 1.4e+06, nu = 0.3, rho = 2070, alpha = 1.2e-07
 Using C^(p-1) continuous displacement basis
+3D printing simulator
 Resolving Dirichlet boundary conditions
 	Constraining P1 V1 in direction(s) 1
 	Constraining P1 E3 in direction(s) 2
@@ -124,11 +126,11 @@ Number of unknowns    77
                             Max Y-displacement : 0.0573814
   Total external load: Sum(Fex) = 0 -11955.6
   Total reaction forces: Sum(R) = 0 -11955.5
-  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 7.93113
-  Stress norm, L2: (sigma^h,sigma^h)^0.5 : 7268.25
-  Pressure norm, L2:       (p^h,p^h)^0.5 : 3900.68	(p^h = trace(sigma^h)/3)
-  Deviatoric stress norm:  (s^d,s^d)^0.5 : 4732.52	(s^d = sigma^h - p^h\*I)
-  Stress norm, von Mises: vm(sigma^h)    : 6986.45
+  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 7.93109
+  Stress norm, L2: (sigma^h,sigma^h)^0.5 : 7267.99
+  Pressure norm, L2:       (p^h,p^h)^0.5 : 3900.56	(p^h = trace(sigma^h)/3)
+  Deviatoric stress norm:  (s^d,s^d)^0.5 : 4732.33	(s^d = sigma^h - p^h\*I)
+  Stress norm, von Mises: vm(sigma^h)    : 6986.19
   Max s_xx:             -1.761e+03  X = 0 0 0
   Max s_yy:             -4.135e+03  X = 0.5 0 0
   Max s_xy:              2.840e+03  X = 0 0 0
@@ -144,10 +146,10 @@ Number of unknowns    77
   Total external load: Sum(Fex) = 0 -12096.5
   Total reaction forces: Sum(R) = 0.[0-9]* -12098.7
   Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 4.96096
-  Stress norm, L2: (sigma^h,sigma^h)^0.5 : 5759.55
-  Pressure norm, L2:       (p^h,p^h)^0.5 : 2986.93	(p^h = trace(sigma^h)/3)
-  Deviatoric stress norm:  (s^d,s^d)^0.5 : 3915.22	(s^d = sigma^h - p^h\*I)
-  Stress norm, von Mises: vm(sigma^h)    : 5649.35
+  Stress norm, L2: (sigma^h,sigma^h)^0.5 : 5759.54
+  Pressure norm, L2:       (p^h,p^h)^0.5 : 2986.92	(p^h = trace(sigma^h)/3)
+  Deviatoric stress norm:  (s^d,s^d)^0.5 : 3915.21	(s^d = sigma^h - p^h\*I)
+  Stress norm, von Mises: vm(sigma^h)    : 5649.34
   Max s_xx:             -8.389e+02  X = 0.5 0 0
   Max s_yy:             -7.310e+03  X = 0.5 0 0
   Max s_xy:              1.377e+03  X = 0 0 0
@@ -162,11 +164,11 @@ Number of unknowns    77
                             Max Y-displacement : 0.0526028
   Total external load: Sum(Fex) = 0 -17989.9
   Total reaction forces: Sum(R) = 0 -17989.8
-  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 8.84217
-  Stress norm, L2: (sigma^h,sigma^h)^0.5 : 7748.18
-  Pressure norm, L2:       (p^h,p^h)^0.5 : 4310.53	(p^h = trace(sigma^h)/3)
-  Deviatoric stress norm:  (s^d,s^d)^0.5 : 4782.57	(s^d = sigma^h - p^h\*I)
-  Stress norm, von Mises: vm(sigma^h)    : 7272.56
+  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 8.84214
+  Stress norm, L2: (sigma^h,sigma^h)^0.5 : 7748.05
+  Pressure norm, L2:       (p^h,p^h)^0.5 : 4310.47	(p^h = trace(sigma^h)/3)
+  Deviatoric stress norm:  (s^d,s^d)^0.5 : 4782.47	(s^d = sigma^h - p^h\*I)
+  Stress norm, von Mises: vm(sigma^h)    : 7272.42
   Max s_xx:             -3.012e+03  X = 0.5 0 0
   Max s_yy:             -7.421e+03  X = 0.5 0 0
   Max s_xy:              1.318e+03  X = 0 0 0
@@ -182,10 +184,10 @@ Number of unknowns    77
   Total external load: Sum(Fex) = 0 -18162.8
   Total reaction forces: Sum(R) = 0.[0-9]* -18164.1
   Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 5.63104
-  Stress norm, L2: (sigma^h,sigma^h)^0.5 : 7191.46
-  Pressure norm, L2:       (p^h,p^h)^0.5 : 3840.48	(p^h = trace(sigma^h)/3)
+  Stress norm, L2: (sigma^h,sigma^h)^0.5 : 7191.45
+  Pressure norm, L2:       (p^h,p^h)^0.5 : 3840.47	(p^h = trace(sigma^h)/3)
   Deviatoric stress norm:  (s^d,s^d)^0.5 : 4713.66	(s^d = sigma^h - p^h\*I)
-  Stress norm, von Mises: vm(sigma^h)    : 6933.77
+  Stress norm, von Mises: vm(sigma^h)    : 6933.76
   Max s_xx:             -1.320e+03  X = 0.5 0 0
   Max s_yy:             -8.837e+03  X = 1 0 0
   Max s_xy:              1.671e+03  X = 0 0 0
@@ -200,11 +202,11 @@ Number of unknowns    77
                             Max Y-displacement : 0.0404595
   Total external load: Sum(Fex) = 0 -24068.9
   Total reaction forces: Sum(R) = 0 -24068.8
-  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 9.02999
-  Stress norm, L2: (sigma^h,sigma^h)^0.5 : 8888.37
-  Pressure norm, L2:       (p^h,p^h)^0.5 : 4922.89	(p^h = trace(sigma^h)/3)
-  Deviatoric stress norm:  (s^d,s^d)^0.5 : 5525.71	(s^d = sigma^h - p^h\*I)
-  Stress norm, von Mises: vm(sigma^h)    : 8368.69
+  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 9.02996
+  Stress norm, L2: (sigma^h,sigma^h)^0.5 : 8888.26
+  Pressure norm, L2:       (p^h,p^h)^0.5 : 4922.84	(p^h = trace(sigma^h)/3)
+  Deviatoric stress norm:  (s^d,s^d)^0.5 : 5525.62	(s^d = sigma^h - p^h\*I)
+  Stress norm, von Mises: vm(sigma^h)    : 8368.58
   Max s_xx:             -3.933e+03  X = 1 0 0
   Max s_yy:             -1.051e+04  X = 2 0 0
   Max s_xy:              1.841e+03  X = 0 0 0
@@ -222,7 +224,7 @@ Number of unknowns    77
   Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 6.05015
   Stress norm, L2: (sigma^h,sigma^h)^0.5 : 8301.12
   Pressure norm, L2:       (p^h,p^h)^0.5 : 4458.43	(p^h = trace(sigma^h)/3)
-  Deviatoric stress norm:  (s^d,s^d)^0.5 : 5399.39	(s^d = sigma^h - p^h\*I)
+  Deviatoric stress norm:  (s^d,s^d)^0.5 : 5399.38	(s^d = sigma^h - p^h\*I)
   Stress norm, von Mises: vm(sigma^h)    : 7975.44
   Max s_xx:             -2.097e+03  X = 1 0 0
   Max s_yy:             -1.140e+04  X = 2 0 0
@@ -240,7 +242,7 @@ Number of unknowns    77
   Total reaction forces: Sum(R) = 0 -30214.3
   Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 7.32696
   Stress norm, L2: (sigma^h,sigma^h)^0.5 : 13552.4
-  Pressure norm, L2:       (p^h,p^h)^0.5 : 6838.01	(p^h = trace(sigma^h)/3)
+  Pressure norm, L2:       (p^h,p^h)^0.5 : 6838	(p^h = trace(sigma^h)/3)
   Deviatoric stress norm:  (s^d,s^d)^0.5 : 9494.81	(s^d = sigma^h - p^h\*I)
   Stress norm, von Mises: vm(sigma^h)    : 13490.2
   Max s_xx:             -1.844e+03  X = 1 0 0
@@ -259,7 +261,7 @@ Number of unknowns    77
   Total reaction forces: Sum(R) = 0 -30350.5
   Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 5.62784
   Stress norm, L2: (sigma^h,sigma^h)^0.5 : 13380.9
-  Pressure norm, L2:       (p^h,p^h)^0.5 : 6809.68	(p^h = trace(sigma^h)/3)
+  Pressure norm, L2:       (p^h,p^h)^0.5 : 6809.67	(p^h = trace(sigma^h)/3)
   Deviatoric stress norm:  (s^d,s^d)^0.5 : 9290.06	(s^d = sigma^h - p^h\*I)
   Stress norm, von Mises: vm(sigma^h)    : 13260.1
   Max s_xx:             -1.773e+03  X = 1 0 0
@@ -276,7 +278,7 @@ Number of unknowns    77
                             Max Y-displacement : 0.0733922
   Total external load: Sum(Fex) = 0 -36323.7
   Total reaction forces: Sum(R) = 0 -36327
-  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 7.34001
+  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 7.34
   Stress norm, L2: (sigma^h,sigma^h)^0.5 : 17511
   Pressure norm, L2:       (p^h,p^h)^0.5 : 8760.27	(p^h = trace(sigma^h)/3)
   Deviatoric stress norm:  (s^d,s^d)^0.5 : 12375.5	(s^d = sigma^h - p^h\*I)
@@ -297,7 +299,7 @@ Number of unknowns    77
   Total reaction forces: Sum(R) = 0.[0-9]* -36442.1
   Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 5.74217
   Stress norm, L2: (sigma^h,sigma^h)^0.5 : 17231.7
-  Pressure norm, L2:       (p^h,p^h)^0.5 : 8599.34	(p^h = trace(sigma^h)/3)
+  Pressure norm, L2:       (p^h,p^h)^0.5 : 8599.33	(p^h = trace(sigma^h)/3)
   Deviatoric stress norm:  (s^d,s^d)^0.5 : 12207.9	(s^d = sigma^h - p^h\*I)
   Stress norm, von Mises: vm(sigma^h)    : 17248.1
   Max s_xx:              1.272e+03  X = 0 0 0
@@ -314,7 +316,7 @@ Number of unknowns    77
                             Max Y-displacement : 0.0742473
   Total external load: Sum(Fex) = 0 -42418.7
   Total reaction forces: Sum(R) = 0 -42421.8
-  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 7.51448
+  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 7.51447
   Stress norm, L2: (sigma^h,sigma^h)^0.5 : 20547
   Pressure norm, L2:       (p^h,p^h)^0.5 : 10302.1	(p^h = trace(sigma^h)/3)
   Deviatoric stress norm:  (s^d,s^d)^0.5 : 14488.4	(s^d = sigma^h - p^h\*I)
@@ -428,7 +430,7 @@ Number of unknowns    77
                             Max Y-displacement : 0.072777
   Total external load: Sum(Fex) = 0 -60670
   Total reaction forces: Sum(R) = 0 -60673.3
-  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 8.564
+  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 8.56399
   Stress norm, L2: (sigma^h,sigma^h)^0.5 : 33476.1
   Pressure norm, L2:       (p^h,p^h)^0.5 : 16637.8	(p^h = trace(sigma^h)/3)
   Deviatoric stress norm:  (s^d,s^d)^0.5 : 23812.2	(s^d = sigma^h - p^h\*I)
@@ -466,7 +468,7 @@ Number of unknowns    77
                             Max Y-displacement : 0.074706
   Total external load: Sum(Fex) = 0 -66758.2
   Total reaction forces: Sum(R) = 0 -66761.2
-  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 8.94222
+  Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 8.94221
   Stress norm, L2: (sigma^h,sigma^h)^0.5 : 37494
   Pressure norm, L2:       (p^h,p^h)^0.5 : 18606.5	(p^h = trace(sigma^h)/3)
   Deviatoric stress norm:  (s^d,s^d)^0.5 : 26709.6	(s^d = sigma^h - p^h\*I)
