@@ -31,7 +31,7 @@ public:
   //! \brief The constructor invokes the parent class constructor only.
   //! \param[in] n Number of spatial dimensions
   explicit NonlinearElasticityBirth(unsigned short int n)
-    : NonlinearElasticityUL(n), iAmIntegrating(false), iP2(0) {}
+    : NonlinearElasticityUL(n), iAmIntegrating(false) {}
 
   //! \brief Initializes the integrand with the number of integration points.
   //! \param[in] nGp Total number of interior integration points
@@ -68,9 +68,7 @@ public:
 private:
   bool iAmIntegrating; //!< Flag indicating integration or result evaluation
 
-  mutable size_t              iP2;     //!< Global result point counter
-  mutable std::vector<Tensor> Fbirth1; //!< Initial deformation gradients
-  mutable std::vector<Tensor> Fbirth2; //!< Initial deformation gradients
+  mutable std::vector<Tensor> Fbirth; //!< Deformation gradients at birth
 };
 
 #endif
