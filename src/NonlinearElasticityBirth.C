@@ -16,7 +16,7 @@
 
 void NonlinearElasticityBirth::initIntegration (size_t nGp, size_t nBp)
 {
-  Fbirth1.resize(nGp,Tensor(nDF));
+  Fbirth.resize(nGp,Tensor(nDF));
 
   this->NonlinearElasticityUL::initIntegration(nGp,nBp);
 }
@@ -33,7 +33,6 @@ void NonlinearElasticityBirth::initIntegration (const TimeDomain& prm,
 
 void NonlinearElasticityBirth::initResultPoints (double lambda, char prinDir)
 {
-  iP2 = 0;
   iAmIntegrating = false;
 
   this->NonlinearElasticityUL::initResultPoints(lambda,prinDir);
@@ -45,52 +44,38 @@ bool NonlinearElasticityBirth::kinematics (const Vector& eV, size_t iP,
                                            double r, Tensor& F, Matrix*,
                                            SymmTensor* E) const
 {
+  if (!iAmIntegrating)
+    return this->NonlinearElasticityUL::kinematics(eV,0,N,dNdX,r,F,nullptr,E);
+
   if (E)
     E->zero();
 
-  // Lambda function for evaluating current deformation gradient.
-  auto&& findDefGradient = [this,&eV,&N,&dNdX,r](Tensor& F, Tensor& F0)
+  if (iP >= Fbirth.size())
   {
-    if (F0.isZero(1.0e-16))
-    {
-      // Find the deformation gradient at the element birth configuration
-      if (!this->NonlinearElasticityUL::kinematics(eV,0,N,dNdX,r,F0))
-        return false;
-      else if (F0.inverse() <= 0.0)
-        return false;
-   
-      F = 1.0; // Stress-free element birth configuration
-    }
-    else
-    {
-      // Find deformation gradient w.r.t. the element birth configuration
-      if (!this->NonlinearElasticityUL::kinematics(eV,0,N,dNdX,r,F))
-        return false;
-
-      F *= F0;
-    }
-    return true;
-  };
-
-  if (iAmIntegrating)
-  {
-    if (iP >= Fbirth1.size())
-    {
-      std::cerr <<" *** NonlinearElasticityBirth::kinematics:"
-                <<" Integration point "<< iP+1 <<" is out of range [1,"
-                << Fbirth1.size() <<"]."<< std::endl;
-      return false;
-    }
-    if (!findDefGradient(F,Fbirth1[iP]))
-      return false;
+    std::cerr <<" *** NonlinearElasticityBirth::kinematics:"
+              <<" Integration point "<< iP+1 <<" is out of range [1,"
+              << Fbirth.size() <<"]."<< std::endl;
+    return false;
   }
-  else // Result evaluation
-  {
-    while (Fbirth2.size() <= iP2)
-      Fbirth2.emplace_back(nDF);
 
-    if (!findDefGradient(F,Fbirth2[iP2++]))
+  Tensor& F0 = Fbirth[iP];
+  if (F0.isZero(1.0e-16))
+  {
+    // Find the deformation gradient at the element birth configuration
+    if (!this->NonlinearElasticityUL::kinematics(eV,0,N,dNdX,r,F0))
       return false;
+    else if (F0.inverse() <= 0.0)
+      return false;
+
+    F = 1.0; // Stress-free element birth configuration
+  }
+  else
+  {
+    // Find deformation gradient w.r.t. the element birth configuration
+    if (!this->NonlinearElasticityUL::kinematics(eV,0,N,dNdX,r,F))
+      return false;
+
+    F *= F0;
   }
 
   if (E)
@@ -116,11 +101,11 @@ bool NonlinearElasticityBirth::kinematics (const Vector& eV, size_t iP,
 
 bool NonlinearElasticityBirth::checkItgBuffer (size_t nGp) const
 {
-  if (nGp == Fbirth1.size())
+  if (nGp == Fbirth.size())
     return this->NonlinearElasticityUL::checkItgBuffer(nGp);
 
   std::cerr <<" *** NonlinearElasticityBirth::checkItgBuffer:"
             <<" Can't change number number of integration points, "
-            << nGp <<" != "<< Fbirth1.size() << std::endl;
+            << nGp <<" != "<< Fbirth.size() << std::endl;
   return false;
 }
