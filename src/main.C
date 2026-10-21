@@ -192,17 +192,15 @@ int main (int argc, char** argv)
   double zero_tol = 1.0e-8;
   double stopTime = 0.0;
   bool useFbirth = false;
-  char* infile = nullptr;
   SIMargsBase args("finitedeformation");
 
   IFEM::Init(argc,argv,"Concrete 3D printing simulator");
 
-  for (int i = 1; i < argc; i++)
-    if (argv[i] == infile || args.parseArg(argv[i]))
-      ; // ignore the input file on the second pass
-    else if (SIMoptions::ignoreOldOptions(argc,argv,i))
-      ; // ignore the obsolete option
-    else if (!strcmp(argv[i],"-incnl2"))
+  // Lambda function for parsing the options not stored in SIMargsBase.
+  auto external_args = [argc,argv,&nLinIt,&outPrec,&zero_tol,&stopTime,
+                        &useFbirth](int& i) -> bool
+  {
+    if (!strcmp(argv[i],"-incnl2"))
       ASM::includeNeighbor_L2 = true;
     else if (!strcmp(argv[i],"-outPrec") && i < argc-1)
       outPrec = atoi(argv[++i]);
@@ -216,16 +214,12 @@ int main (int argc, char** argv)
       nLinIt = atoi(argv[++i]);
     else if (!strcmp(argv[i],"-Fbirth"))
       useFbirth = true;
-    else if (!infile && strcasestr(infile = argv[i],".xinp"))
-    {
-      if (args.readXML(infile,false))
-        i = 0; // start over and let command-line options override input file
-      else
-        return 1; // pre-parse failure
-    }
     else
-      std::cerr <<"  ** Unknown option ignored: "<< argv[i] << std::endl;
+      return false;
+    return true;
+  };
 
+  char* infile = args.preParse(argc,argv,external_args);
   if (!infile)
   {
     std::cout <<"usage: "<< argv[0]
