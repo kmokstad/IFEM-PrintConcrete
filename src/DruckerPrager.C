@@ -163,8 +163,8 @@ double DruckerPrager::getInternalVar (int idx, char* label, size_t) const
     const double sdim = sigma.size() == 4 ? 3.0 : (double)sigma.dim();
     // Calculate the stress invariants (p,q,r)
     // These expressions are taken from the Abaqus Theory Guide
-    const double p = -sigma.trace()/sdim; // Hydrostatic pressure
-    const SymmTensor S(sigma + p); // Deviatoric stress
+    const double p = sigma.trace()/sdim; // Hydrostatic pressure
+    const SymmTensor S(sigma - p); // Deviatoric stress
     const double q = sqrt(1.5*S.innerProd(S)); // Mises equivalent stress
     if (K >= 1.0) return q - a*p;
     const double r3 = 4.5*S.innerProd(S*S); // 3rd stress invariant

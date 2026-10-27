@@ -78,10 +78,10 @@ Number of unknowns    77
   Max s_yy:             -1.131e+04  X = 0 0 0
   Max s_xy:              3.692e+02  X = 0 0 0
   Max von Mises stress:  1.130e+04  X = 0 0 0
-  Max sigma(DP):         6.029e+03  X = 0 0 0
+  Max sigma(DP):         1.434e+04  X = 0 0 0
   Max Youngs modulus:    3.667e+05  X = 0 0 0
   Max Yield limit:       5.667e+03  X = 0 0 0
-  Max Yield utilizatio:  1.388e+02  X = 0 0 0
+  Max Yield utilizatio:  3.301e+02  X = 0 0 0
   step=2  time=20
   Primary solution summary: L2-norm            : 0.00185363
                             Max X-displacement : 0.00455302
@@ -97,10 +97,10 @@ Number of unknowns    77
   Max s_yy:             -1.143e+04  X = 0 0 0
   Max s_xy:              3.754e+02  X = 0 0 0
   Max von Mises stress:  1.141e+04  X = 0 0 0
-  Max sigma(DP):         5.982e+03  X = 0 0 0
+  Max sigma(DP):         1.425e+04  X = 0 0 0
   Max Youngs modulus:    5.667e+05  X = 0 0 0
   Max Yield limit:       1.300e+04  X = 0 0 0
-  Max Yield utilizatio:  6.002e+01  X = 0 0 0
+  Max Yield utilizatio:  1.430e+02  X = 0 0 0
   step=3  time=30
   Primary solution summary: L2-norm            : 0.00149577
                             Max X-displacement : 0.00367685
@@ -116,10 +116,10 @@ Number of unknowns    77
   Max s_yy:             -1.147e+04  X = 0 0 0
   Max s_xy:              3.775e+02  X = 0 0 0
   Max von Mises stress:  1.145e+04  X = 0 0 0
-  Max sigma(DP):         5.966e+03  X = 0 0 0
+  Max sigma(DP):         1.423e+04  X = 0 0 0
   Max Youngs modulus:    7.000e+05  X = 0 0 0
   Max Yield limit:       2.700e+04  X = 0 0 0
-  Max Yield utilizatio:  2.882e+01  X = 0 0 0
+  Max Yield utilizatio:  6.873e+01  X = 0 0 0
   step=4  time=40
   Primary solution summary: L2-norm            : 0.0114651
                             Max X-displacement : 0.0376835
@@ -135,16 +135,16 @@ Number of unknowns    77
   Max s_yy:             -4.135e+03  X = 0.5 0 0
   Max s_xy:              2.840e+03  X = 0 0 0
   Max von Mises stress:  5.383e+03  X = 0 0 0
-  Max sigma(DP):         3.694e+03  X = 0 0 0
+  Max sigma(DP):         4.937e+03  X = 0.5 0 0
   Max Youngs modulus:    9.667e+05  X = 0 0 0
   Max Yield limit:       2.900e+04  X = 0 0 0
-  Max Yield utilizatio:  3.708e+01  X = 0.5 0 0
+  Max Yield utilizatio:  1.288e+02  X = 0.5 0 0
   step=5  time=50
   Primary solution summary: L2-norm            : 0.00303281
                             Max X-displacement : 0.00854804
                             Max Y-displacement : 0.0120836
   Total external load: Sum(Fex) = 0 -12096.5
-  Total reaction forces: Sum(R) = 0.[0-9]* -12098.7
+  Total reaction forces: Sum(R) = 0.2606 -12098.7
   Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 4.96096
   Stress norm, L2: (sigma^h,sigma^h)^0.5 : 5759.54
   Pressure norm, L2:       (p^h,p^h)^0.5 : 2986.92	(p^h = trace(sigma^h)/3)
@@ -154,10 +154,10 @@ Number of unknowns    77
   Max s_yy:             -7.310e+03  X = 0.5 0 0
   Max s_xy:              1.377e+03  X = 0 0 0
   Max von Mises stress:  6.932e+03  X = 0.5 0 0
-  Max sigma(DP):         2.869e+03  X = 0.5 0 0
+  Max sigma(DP):         8.686e+03  X = 0.5 0 0
   Max Youngs modulus:    1.200e+06  X = 0 0 0
   Max Yield limit:       3.133e+04  X = 0 0 0
-  Max Yield utilizatio:  6.605e+01  X = 0.5 0 0
+  Max Yield utilizatio:  1.999e+02  X = 0.5 0 0
   step=6  time=60
   Primary solution summary: L2-norm            : 0.0105118
                             Max X-displacement : 0.0293123
@@ -173,16 +173,16 @@ Number of unknowns    77
   Max s_yy:             -7.421e+03  X = 0.5 0 0
   Max s_xy:              1.318e+03  X = 0 0 0
   Max von Mises stress:  6.534e+03  X = 0.5 0 0
-  Max sigma(DP):         4.308e+03  X = 0 0 0
+  Max sigma(DP):         7.642e+03  X = 0.5 0 0
   Max Youngs modulus:    1.400e+06  X = 0 0 0
   Max Yield limit:       3.400e+04  X = 0 0 0
-  Max Yield utilizatio:  3.471e+01  X = 1 0 0
+  Max Yield utilizatio:  1.533e+02  X = 1 0 0
   step=7  time=70
   Primary solution summary: L2-norm            : 0.00288832
                             Max X-displacement : 0.00774042
                             Max Y-displacement : 0.0101976
   Total external load: Sum(Fex) = 0 -18162.8
-  Total reaction forces: Sum(R) = 0.[0-9]* -18164.1
+  Total reaction forces: Sum(R) = 0.0131081 -18164.1
   Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 5.63104
   Stress norm, L2: (sigma^h,sigma^h)^0.5 : 7191.45
   Pressure norm, L2:       (p^h,p^h)^0.5 : 3840.47	(p^h = trace(sigma^h)/3)
@@ -192,10 +192,10 @@ Number of unknowns    77
   Max s_yy:             -8.837e+03  X = 1 0 0
   Max s_xy:              1.671e+03  X = 0 0 0
   Max von Mises stress:  8.292e+03  X = 1 0 0
-  Max sigma(DP):         3.242e+03  X = 1 0 0
+  Max sigma(DP):         1.044e+04  X = 1 0 0
   Max Youngs modulus:    2.779e+06  X = 0 0 0
   Max Yield limit:       2.421e+05  X = 0 0 0
-  Max Yield utilizatio:  7.463e+01  X = 1 0 0
+  Max Yield utilizatio:  2.404e+02  X = 1 0 0
   step=8  time=80
   Primary solution summary: L2-norm            : 0.00888165
                             Max X-displacement : 0.0284233
@@ -211,10 +211,10 @@ Number of unknowns    77
   Max s_yy:             -1.051e+04  X = 2 0 0
   Max s_xy:              1.841e+03  X = 0 0 0
   Max von Mises stress:  1.006e+04  X = 2 0 0
-  Max sigma(DP):         5.383e+03  X = 2 0 0
+  Max sigma(DP):         1.468e+04  X = 2 0 0
   Max Youngs modulus:    4.158e+06  X = 0 0 0
   Max Yield limit:       4.502e+05  X = 0 0 0
-  Max Yield utilizatio:  1.404e+02  X = 2 0 0
+  Max Yield utilizatio:  3.831e+02  X = 2 0 0
   step=9  time=90
   Primary solution summary: L2-norm            : 0.00280718
                             Max X-displacement : 0.00653037
@@ -230,10 +230,10 @@ Number of unknowns    77
   Max s_yy:             -1.140e+04  X = 2 0 0
   Max s_xy:              1.834e+03  X = 0 0 0
   Max von Mises stress:  1.138e+04  X = 2 0 0
-  Max sigma(DP):         6.069e+03  X = 2 0 0
+  Max sigma(DP):         1.444e+04  X = 2 0 0
   Max Youngs modulus:    5.538e+06  X = 0 0 0
   Max Yield limit:       6.583e+05  X = 0 0 0
-  Max Yield utilizatio:  1.397e+02  X = 2 0 0
+  Max Yield utilizatio:  3.325e+02  X = 2 0 0
   step=10  time=100
   Primary solution summary: L2-norm            : 0.00880339
                             Max X-displacement : 0.021255
@@ -249,10 +249,10 @@ Number of unknowns    77
   Max s_yy:             -1.477e+04  X = 0 0 0
   Max s_xy:              1.117e+03  X = 0 0 0
   Max von Mises stress:  1.438e+04  X = 0 0 0
-  Max sigma(DP):         6.384e+03  X = 0 0 0
+  Max sigma(DP):         1.752e+04  X = 0 0 0
   Max Youngs modulus:    6.917e+06  X = 0 0 0
   Max Yield limit:       8.664e+05  X = 0 0 0
-  Max Yield utilizatio:  5.977e+01  X = 2 0 0
+  Max Yield utilizatio:  1.423e+02  X = 2 0 0
   step=11  time=110
   Primary solution summary: L2-norm            : 0.00284331
                             Max X-displacement : 0.00393971
@@ -268,10 +268,10 @@ Number of unknowns    77
   Max s_yy:             -1.735e+04  X = 0 0 0
   Max s_xy:              5.677e+02  X = 0.5 0 0
   Max von Mises stress:  1.712e+04  X = 0 0 0
-  Max sigma(DP):         8.366e+03  X = 0 0 0
+  Max sigma(DP):         2.090e+04  X = 0 0 0
   Max Youngs modulus:    8.296e+06  X = 0 0 0
   Max Yield limit:       1.074e+06  X = 0 0 0
-  Max Yield utilizatio:  2.988e+01  X = 2 0 0
+  Max Yield utilizatio:  6.945e+01  X = 2 0 0
   step=12  time=120
   Primary solution summary: L2-norm            : 0.00992879
                             Max X-displacement : 0.0382621
@@ -287,16 +287,16 @@ Number of unknowns    77
   Max s_yy:             -1.333e+04  X = 0 0 0
   Max s_xy:             -4.851e+02  X = 2 0 0
   Max von Mises stress:  1.372e+04  X = 0 0 0
-  Max sigma(DP):         7.782e+03  X = 0 0 0
+  Max sigma(DP):         1.662e+04  X = 0 0 0
   Max Youngs modulus:    9.675e+06  X = 0 0 0
   Max Yield limit:       1.283e+06  X = 0 0 0
-  Max Yield utilizatio:  2.602e+01  X = 2 0 0
+  Max Yield utilizatio:  6.139e+01  X = 2 0 0
   step=13  time=130
   Primary solution summary: L2-norm            : 0.00290656
                             Max X-displacement : 0.0085885
                             Max Y-displacement : 0.0185117
   Total external load: Sum(Fex) = 0 -36435.2
-  Total reaction forces: Sum(R) = 0.[0-9]* -36442.1
+  Total reaction forces: Sum(R) = 0.00412224 -36442.1
   Energy norm:    |u^h| = a(u^h,u^h)^0.5 : 5.74217
   Stress norm, L2: (sigma^h,sigma^h)^0.5 : 17231.7
   Pressure norm, L2:       (p^h,p^h)^0.5 : 8599.33	(p^h = trace(sigma^h)/3)
@@ -306,10 +306,10 @@ Number of unknowns    77
   Max s_yy:             -1.498e+04  X = 0 0 0
   Max s_xy:              8.853e+02  X = 0 0 0
   Max von Mises stress:  1.573e+04  X = 0 0 0
-  Max sigma(DP):         9.329e+03  X = 0 0 0
+  Max sigma(DP):         1.895e+04  X = 0 0 0
   Max Youngs modulus:    1.105e+07  X = 0 0 0
   Max Yield limit:       1.491e+06  X = 0 0 0
-  Max Yield utilizatio:  2.333e+01  X = 2 0 0
+  Max Yield utilizatio:  5.786e+01  X = 2 0 0
   step=14  time=140
   Primary solution summary: L2-norm            : 0.00989735
                             Max X-displacement : 0.0381685
@@ -325,10 +325,10 @@ Number of unknowns    77
   Max s_yy:             -1.551e+04  X = 0.5 0 0
   Max s_xy:              5.909e+02  X = 0 0 0
   Max von Mises stress:  1.553e+04  X = 0.5 0 0
-  Max sigma(DP):         8.067e+03  X = 0.5 0 0
+  Max sigma(DP):         1.893e+04  X = 0.5 0 0
   Max Youngs modulus:    1.243e+07  X = 0 0 0
   Max Yield limit:       1.699e+06  X = 0 0 0
-  Max Yield utilizatio:  2.538e+01  X = 2 0 0
+  Max Yield utilizatio:  5.986e+01  X = 2 0 0
   step=15  time=150
   Primary solution summary: L2-norm            : 0.00294437
                             Max X-displacement : 0.0102603
@@ -344,10 +344,10 @@ Number of unknowns    77
   Max s_yy:             -1.669e+04  X = 0 0 0
   Max s_xy:              4.276e+02  X = 1.5 0 0
   Max von Mises stress:  1.639e+04  X = 0 0 0
-  Max sigma(DP):         8.258e+03  X = 0.5 0 0
+  Max sigma(DP):         2.001e+04  X = 0 0 0
   Max Youngs modulus:    1.381e+07  X = 0 0 0
   Max Yield limit:       1.907e+06  X = 0 0 0
-  Max Yield utilizatio:  1.499e+01  X = 1 0.6 0
+  Max Yield utilizatio:  3.619e+01  X = 1 0.6 0
   step=16  time=160
   Primary solution summary: L2-norm            : 0.00730684
                             Max X-displacement : 0.0254993
@@ -363,10 +363,10 @@ Number of unknowns    77
   Max s_yy:             -1.915e+04  X = 2 0 0
   Max s_xy:             -3.625e+02  X = 2 0 0
   Max von Mises stress:  1.969e+04  X = 2 0 0
-  Max sigma(DP):         1.118e+04  X = 2 0 0
+  Max sigma(DP):         2.397e+04  X = 2 0 0
   Max Youngs modulus:    1.519e+07  X = 0 0 0
   Max Yield limit:       2.115e+06  X = 0 0 0
-  Max Yield utilizatio:  9.698e+00  X = 2 0.6 0
+  Max Yield utilizatio:  1.985e+01  X = 2 0.6 0
   step=17  time=170
   Primary solution summary: L2-norm            : 0.00255865
                             Max X-displacement : 0.00726938
@@ -382,10 +382,10 @@ Number of unknowns    77
   Max s_yy:             -2.089e+04  X = 2 0 0
   Max s_xy:             -3.954e+02  X = 2 0 0
   Max von Mises stress:  2.118e+04  X = 2 0 0
-  Max sigma(DP):         1.150e+04  X = 2 0 0
+  Max sigma(DP):         2.582e+04  X = 2 0 0
   Max Youngs modulus:    1.657e+07  X = 0 0 0
   Max Yield limit:       2.323e+06  X = 0 0 0
-  Max Yield utilizatio:  2.234e+01  X = 2 0.6 0
+  Max Yield utilizatio:  4.830e+01  X = 2 0.6 0
   step=18  time=180
   Primary solution summary: L2-norm            : 0.00887088
                             Max X-displacement : 0.0157582
@@ -401,10 +401,10 @@ Number of unknowns    77
   Max s_yy:             -2.945e+04  X = 0 0 0
   Max s_xy:              1.201e+03  X = 0 0 0
   Max von Mises stress:  3.034e+04  X = 0 0 0
-  Max sigma(DP):         1.718e+04  X = 0 0 0
+  Max sigma(DP):         3.675e+04  X = 0 0 0
   Max Youngs modulus:    1.795e+07  X = 0 0 0
   Max Yield limit:       2.531e+06  X = 0 0 0
-  Max Yield utilizatio:  1.139e+01  X = 2 0.6 0
+  Max Yield utilizatio:  2.494e+01  X = 2 0.6 0
   step=19  time=190
   Primary solution summary: L2-norm            : 0.00305416
                             Max X-displacement : 0.00401405
@@ -420,10 +420,10 @@ Number of unknowns    77
   Max s_yy:             -2.869e+04  X = 0 0 0
   Max s_xy:              1.307e+03  X = 0 0 0
   Max von Mises stress:  2.977e+04  X = 0 0 0
-  Max sigma(DP):         1.717e+04  X = 0 0 0
+  Max sigma(DP):         3.598e+04  X = 0 0 0
   Max Youngs modulus:    1.933e+07  X = 0 0 0
   Max Yield limit:       2.739e+06  X = 0 0 0
-  Max Yield utilizatio:  2.320e+01  X = 0 1.2 0
+  Max Yield utilizatio:  5.299e+01  X = 0 1.2 0
   step=20  time=200
   Primary solution summary: L2-norm            : 0.00983496
                             Max X-displacement : 0.0371064
@@ -439,10 +439,10 @@ Number of unknowns    77
   Max s_yy:             -3.602e+04  X = 0 0 0
   Max s_xy:              1.342e+03  X = 0 0 0
   Max von Mises stress:  3.593e+04  X = 0 0 0
-  Max sigma(DP):         1.826e+04  X = 0 0 0
+  Max sigma(DP):         4.378e+04  X = 0 0 0
   Max Youngs modulus:    2.071e+07  X = 0 0 0
   Max Yield limit:       2.947e+06  X = 0 0 0
-  Max Yield utilizatio:  7.790e+00  X = 0 1.2 0
+  Max Yield utilizatio:  2.086e+01  X = 0 1.2 0
   step=21  time=210
   Primary solution summary: L2-norm            : 0.00301373
                             Max X-displacement : 0.00775107
@@ -458,10 +458,10 @@ Number of unknowns    77
   Max s_yy:             -3.611e+04  X = 0 0 0
   Max s_xy:              5.294e+02  X = 0 0 0
   Max von Mises stress:  3.567e+04  X = 0 0 0
-  Max sigma(DP):         1.755e+04  X = 0 0 0
+  Max sigma(DP):         4.354e+04  X = 0 0 0
   Max Youngs modulus:    2.209e+07  X = 0 0 0
   Max Yield limit:       3.155e+06  X = 0 0 0
-  Max Yield utilizatio:  1.473e+01  X = 0.5 1.2 0
+  Max Yield utilizatio:  3.984e+01  X = 0.5 1.2 0
   step=22  time=220
   Primary solution summary: L2-norm            : 0.00997673
                             Max X-displacement : 0.0378943
@@ -477,10 +477,10 @@ Number of unknowns    77
   Max s_yy:             -3.516e+04  X = 0 0 0
   Max s_xy:             -1.008e+03  X = 0.5 0.6 0
   Max von Mises stress:  3.486e+04  X = 0 0 0
-  Max sigma(DP):         1.743e+04  X = 0 0 0
+  Max sigma(DP):         4.253e+04  X = 0 0 0
   Max Youngs modulus:    2.347e+07  X = 0 0 0
   Max Yield limit:       3.364e+06  X = 0 0 0
-  Max Yield utilizatio:  6.560e+00  X = 0.5 1.2 0
+  Max Yield utilizatio:  2.045e+01  X = 0.5 1.2 0
   step=23  time=230
   Primary solution summary: L2-norm            : 0.00309618
                             Max X-displacement : 0.00969933
@@ -496,10 +496,10 @@ Number of unknowns    77
   Max s_yy:             -3.489e+04  X = 0 0 0
   Max s_xy:             -9.028e+02  X = 0.5 0.6 0
   Max von Mises stress:  3.500e+04  X = 0 0 0
-  Max sigma(DP):         1.824e+04  X = 0 0 0
+  Max sigma(DP):         4.260e+04  X = 0 0 0
   Max Youngs modulus:    2.485e+07  X = 0 0 0
   Max Yield limit:       3.572e+06  X = 0 0 0
-  Max Yield utilizatio:  1.232e+01  X = 1 1.2 0
+  Max Yield utilizatio:  3.817e+01  X = 1 1.2 0
   step=24  time=240
   Primary solution summary: L2-norm            : 0.00750356
                             Max X-displacement : 0.0253779
@@ -515,10 +515,10 @@ Number of unknowns    77
   Max s_yy:             -3.389e+04  X = 2 0 0
   Max s_xy:              8.247e+02  X = 0 0 0
   Max von Mises stress:  3.399e+04  X = 2 0 0
-  Max sigma(DP):         1.774e+04  X = 2 0 0
+  Max sigma(DP):         4.143e+04  X = 2 0 0
   Max Youngs modulus:    2.622e+07  X = 0 0 0
   Max Yield limit:       3.780e+06  X = 0 0 0
-  Max Yield utilizatio:  1.123e+01  X = 2 1.2 0
+  Max Yield utilizatio:  2.357e+01  X = 2 1.2 0
   step=25  time=250
   Primary solution summary: L2-norm            : 0.00285838
                             Max X-displacement : 0.00738
@@ -534,10 +534,10 @@ Number of unknowns    77
   Max s_yy:             -3.399e+04  X = 2 0 0
   Max s_xy:              8.172e+02  X = 0 0 0
   Max von Mises stress:  3.422e+04  X = 2 0 0
-  Max sigma(DP):         1.810e+04  X = 2 0 0
+  Max sigma(DP):         4.167e+04  X = 2 0 0
   Max Youngs modulus:    2.760e+07  X = 0 0 0
   Max Yield limit:       3.988e+06  X = 0 0 0
-  Max Yield utilizatio:  2.527e+01  X = 2 1.2 0
+  Max Yield utilizatio:  5.578e+01  X = 2 1.2 0
   step=26  time=260
   Primary solution summary: L2-norm            : 0.00913386
                             Max X-displacement : 0.015436
@@ -553,10 +553,10 @@ Number of unknowns    77
   Max s_yy:             -4.234e+04  X = 0 0 0
   Max s_xy:             -6.804e+02  X = 2 0 0
   Max von Mises stress:  4.228e+04  X = 0 0 0
-  Max sigma(DP):         2.173e+04  X = 0 0 0
+  Max sigma(DP):         5.153e+04  X = 0 0 0
   Max Youngs modulus:    2.898e+07  X = 0 0 0
   Max Yield limit:       4.196e+06  X = 0 0 0
-  Max Yield utilizatio:  1.254e+01  X = 2 1.2 0
+  Max Yield utilizatio:  2.803e+01  X = 2 1.2 0
   step=27  time=270
   Primary solution summary: L2-norm            : 0.0033748
                             Max X-displacement : 0.00436844
@@ -572,10 +572,10 @@ Number of unknowns    77
   Max s_yy:             -4.264e+04  X = 0 0 0
   Max s_xy:             -6.634e+02  X = 2 0 0
   Max von Mises stress:  4.244e+04  X = 0 0 0
-  Max sigma(DP):         2.153e+04  X = 0 0 0
+  Max sigma(DP):         5.174e+04  X = 0 0 0
   Max Youngs modulus:    3.036e+07  X = 0 0 0
   Max Yield limit:       4.404e+06  X = 0 0 0
-  Max Yield utilizatio:  2.206e+01  X = 0 1.8 0
+  Max Yield utilizatio:  5.090e+01  X = 0 1.8 0
   step=28  time=280
   Primary solution summary: L2-norm            : 0.00996131
                             Max X-displacement : 0.0365104
@@ -591,10 +591,10 @@ Number of unknowns    77
   Max s_yy:             -4.646e+04  X = 0 0 0
   Max s_xy:             -7.372e+02  X = 0 1.2 0
   Max von Mises stress:  4.654e+04  X = 0 0 0
-  Max sigma(DP):         2.421e+04  X = 0 0 0
+  Max sigma(DP):         5.669e+04  X = 0 0 0
   Max Youngs modulus:    3.174e+07  X = 0 0 0
   Max Yield limit:       4.612e+06  X = 0 0 0
-  Max Yield utilizatio:  7.140e+00  X = 0 1.8 0
+  Max Yield utilizatio:  1.956e+01  X = 0 1.8 0
   step=29  time=290
   Primary solution summary: L2-norm            : 0.00327089
                             Max X-displacement : 0.00727936
@@ -610,10 +610,10 @@ Number of unknowns    77
   Max s_yy:             -4.637e+04  X = 0 0 0
   Max s_xy:             -5.689e+02  X = 2 0 0
   Max von Mises stress:  4.659e+04  X = 0 0 0
-  Max sigma(DP):         2.447e+04  X = 0 0 0
+  Max sigma(DP):         5.672e+04  X = 0 0 0
   Max Youngs modulus:    3.312e+07  X = 0 0 0
   Max Yield limit:       4.820e+06  X = 0 0 0
-  Max Yield utilizatio:  1.482e+01  X = 0.5 1.8 0
+  Max Yield utilizatio:  3.907e+01  X = 0.5 1.8 0
   step=30  time=300
   Primary solution summary: L2-norm            : 0.0101156
                             Max X-displacement : 0.0376737
@@ -629,10 +629,10 @@ Number of unknowns    77
   Max s_yy:             -4.705e+04  X = 0 0 0
   Max s_xy:             -9.790e+02  X = 0.5 1.2 0
   Max von Mises stress:  4.695e+04  X = 0 0 0
-  Max sigma(DP):         2.407e+04  X = 0 0 0
+  Max sigma(DP):         5.721e+04  X = 0 0 0
   Max Youngs modulus:    3.450e+07  X = 0 0 0
   Max Yield limit:       5.028e+06  X = 0 0 0
-  Max Yield utilizatio:  6.597e+00  X = 0.5 1.8 0
+  Max Yield utilizatio:  2.002e+01  X = 0.5 1.8 0
   step=31  time=310
   Primary solution summary: L2-norm            : 0.00333835
                             Max X-displacement : 0.00951698
@@ -648,10 +648,10 @@ Number of unknowns    77
   Max s_yy:             -4.747e+04  X = 0 0 0
   Max s_xy:             -8.723e+02  X = 0.5 1.2 0
   Max von Mises stress:  4.725e+04  X = 0 0 0
-  Max sigma(DP):         2.401e+04  X = 0 0 0
+  Max sigma(DP):         5.760e+04  X = 0 0 0
   Max Youngs modulus:    3.588e+07  X = 0 0 0
   Max Yield limit:       5.236e+06  X = 0 0 0
-  Max Yield utilizatio:  1.283e+01  X = 1 1.8 0
+  Max Yield utilizatio:  3.795e+01  X = 1 1.8 0
   step=32  time=320
   Primary solution summary: L2-norm            : 0.00774657
                             Max X-displacement : 0.0257146
@@ -667,10 +667,10 @@ Number of unknowns    77
   Max s_yy:             -4.648e+04  X = 2 0 0
   Max s_xy:             -3.922e+02  X = 0.5 1.2 0
   Max von Mises stress:  4.661e+04  X = 2 0 0
-  Max sigma(DP):         2.434e+04  X = 2 0 0
+  Max sigma(DP):         5.679e+04  X = 2 0 0
   Max Youngs modulus:    3.726e+07  X = 0 0 0
   Max Yield limit:       5.445e+06  X = 0 0 0
-  Max Yield utilizatio:  1.103e+01  X = 2 1.8 0
+  Max Yield utilizatio:  2.317e+01  X = 2 1.8 0
   step=33  time=330
   Primary solution summary: L2-norm            : 0.00318337
                             Max X-displacement : 0.00770177
@@ -686,10 +686,10 @@ Number of unknowns    77
   Max s_yy:             -4.675e+04  X = 2 0 0
   Max s_xy:             -2.776e+02  X = 2 0 0
   Max von Mises stress:  4.684e+04  X = 2 0 0
-  Max sigma(DP):         2.438e+04  X = 2 0 0
+  Max sigma(DP):         5.707e+04  X = 2 0 0
   Max Youngs modulus:    3.864e+07  X = 0 0 0
   Max Yield limit:       5.653e+06  X = 0 0 0
-  Max Yield utilizatio:  2.482e+01  X = 2 1.8 0
+  Max Yield utilizatio:  5.477e+01  X = 2 1.8 0
   step=34  time=340
   Primary solution summary: L2-norm            : 0.00579663
                             Max X-displacement : 0.0078013
@@ -705,10 +705,10 @@ Number of unknowns    77
   Max s_yy:             -5.319e+04  X = 0 0 0
   Max s_xy:              5.238e+02  X = 0.5 1.2 0
   Max von Mises stress:  5.336e+04  X = 0 0 0
-  Max sigma(DP):         2.789e+04  X = 0 0 0
+  Max sigma(DP):         6.497e+04  X = 0 0 0
   Max Youngs modulus:    4.002e+07  X = 0 0 0
   Max Yield limit:       5.861e+06  X = 0 0 0
-  Max Yield utilizatio:  8.899e+01  X = 0 3 0
+  Max Yield utilizatio:  1.986e+02  X = 0 3 0
   step=35  time=350
   Primary solution summary: L2-norm            : 0.00300018
                             Max X-displacement : 0.003384
@@ -724,10 +724,10 @@ Number of unknowns    77
   Max s_yy:             -5.325e+04  X = 0 0 0
   Max s_xy:              5.368e+02  X = 0 0 0
   Max von Mises stress:  5.345e+04  X = 0 0 0
-  Max sigma(DP):         2.797e+04  X = 0 0 0
+  Max sigma(DP):         6.507e+04  X = 0 0 0
   Max Youngs modulus:    4.140e+07  X = 0 0 0
   Max Yield limit:       6.069e+06  X = 0 0 0
-  Max Yield utilizatio:  6.633e+01  X = 0 3 0
+  Max Yield utilizatio:  1.596e+02  X = 0 3 0
   step=36  time=360
   Primary solution summary: L2-norm            : 0.00585031
                             Max X-displacement : 0.0187416
@@ -743,10 +743,10 @@ Number of unknowns    77
   Max s_yy:             -5.923e+04  X = 0 0 0
   Max s_xy:              2.233e+03  X = 0 3 0
   Max von Mises stress:  5.925e+04  X = 0 0 0
-  Max sigma(DP):         3.065e+04  X = 0 0 0
+  Max sigma(DP):         7.218e+04  X = 0 0 0
   Max Youngs modulus:    4.278e+07  X = 0 0 0
   Max Yield limit:       6.277e+06  X = 0 0 0
-  Max Yield utilizatio:  3.714e+01  X = 0.5 3 0
+  Max Yield utilizatio:  7.358e+01  X = 0.5 3 0
   step=37  time=370
   Primary solution summary: L2-norm            : 0.00273951
                             Max X-displacement : 0.00388681
@@ -762,10 +762,10 @@ Number of unknowns    77
   Max s_yy:             -5.927e+04  X = 0 0 0
   Max s_xy:             -3.296e+02  X = 0 1.8 0
   Max von Mises stress:  5.921e+04  X = 0 0 0
-  Max sigma(DP):         3.050e+04  X = 0 0 0
+  Max sigma(DP):         7.215e+04  X = 0 0 0
   Max Youngs modulus:    4.415e+07  X = 0 0 0
   Max Yield limit:       6.485e+06  X = 0 0 0
-  Max Yield utilizatio:  3.677e+01  X = 0.5 3 0
+  Max Yield utilizatio:  9.454e+01  X = 0.5 3 0
   step=38  time=380
   Primary solution summary: L2-norm            : 0.00591298
                             Max X-displacement : 0.019692
@@ -781,10 +781,10 @@ Number of unknowns    77
   Max s_yy:             -5.980e+04  X = 0 0 0
   Max s_xy:             -8.966e+02  X = 0.5 1.8 0
   Max von Mises stress:  5.983e+04  X = 0 0 0
-  Max sigma(DP):         3.095e+04  X = 0 0 0
+  Max sigma(DP):         7.288e+04  X = 0 0 0
   Max Youngs modulus:    4.553e+07  X = 0 0 0
   Max Yield limit:       6.693e+06  X = 0 0 0
-  Max Yield utilizatio:  3.759e+01  X = 1 3 0
+  Max Yield utilizatio:  7.278e+01  X = 1 3 0
   step=39  time=390
   Primary solution summary: L2-norm            : 0.00270689
                             Max X-displacement : 0.00526754
@@ -800,10 +800,10 @@ Number of unknowns    77
   Max s_yy:             -5.975e+04  X = 0 0 0
   Max s_xy:             -7.850e+02  X = 0.5 1.8 0
   Max von Mises stress:  5.982e+04  X = 0 0 0
-  Max sigma(DP):         3.106e+04  X = 0 0 0
+  Max sigma(DP):         7.286e+04  X = 0 0 0
   Max Youngs modulus:    4.691e+07  X = 0 0 0
   Max Yield limit:       6.901e+06  X = 0 0 0
-  Max Yield utilizatio:  3.166e+01  X = 1 3 0
+  Max Yield utilizatio:  9.189e+01  X = 1 3 0
   step=40  time=400
   Primary solution summary: L2-norm            : 0.00504758
                             Max X-displacement : 0.0148208
@@ -819,8 +819,8 @@ Number of unknowns    77
   Max s_yy:             -5.907e+04  X = 2 0 0
   Max s_xy:              7.675e+02  X = 1 3 0
   Max von Mises stress:  5.915e+04  X = 2 0 0
-  Max sigma(DP):         3.071e+04  X = 2 0 0
+  Max sigma(DP):         7.206e+04  X = 2 0 0
   Max Youngs modulus:    4.829e+07  X = 0 0 0
   Max Yield limit:       7.109e+06  X = 0 0 0
-  Max Yield utilizatio:  1.069e+02  X = 2 3 0
+  Max Yield utilizatio:  2.263e+02  X = 2 3 0
   Time integration completed.
