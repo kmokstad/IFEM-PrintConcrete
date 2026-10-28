@@ -17,6 +17,7 @@
 #include "SIMargsBase.h"
 #include "ASMbase.h"
 #include "NonlinearDriver.h"
+#include "Elasticity.h"
 #include "HDF5Writer.h"
 #include "HDF5Restart.h"
 #include "Profiler.h"
@@ -30,7 +31,7 @@
   \brief Reads the input file and invokes the main simulation driver.
 */
 
-int runSimulator (SIMoutput& model, char* infile, int nLinIt,
+int runSimulator (SIMoutput& model, char* infile, int nLinIt, char printMax,
                   double stopTime, double zero_tol, int outPrec)
 {
   class MyDriver : public NonlinearDriver
@@ -65,6 +66,15 @@ int runSimulator (SIMoutput& model, char* infile, int nLinIt,
   if (stopTime < 0.0) // model check
     // Save FE model to VTF file for visualization
     return simulator.saveModel() && model.writeGlvStep(1) ? 0 : 4;
+
+  size_t numPatch = 1;
+  const Elasticity* elp;
+  if (!(elp = dynamic_cast<const Elasticity*>(model.getProblem())))
+    printMax = false;
+  else if (printMax == 'P')
+    numPatch = model.getFEModel().size();
+  if (printMax)
+    const_cast<Elasticity*>(elp)->initMaxVals(numPatch);
 
   if (model.opt.discretization < ASM::Spline && !model.opt.hdf5.empty())
   {
@@ -149,7 +159,8 @@ int runSimulator (SIMoutput& model, char* infile, int nLinIt,
                <<"\nsmoothed secondary solution fields."<< std::endl;
 
   // Now invoke the main solution driver
-  return simulator.solveProblem(_my.writer,_my.restart,zero_tol,outPrec);
+  return simulator.solveProblem(_my.writer,_my.restart,nullptr,
+                                printMax,0.0,zero_tol,outPrec);
 }
 
 
@@ -173,6 +184,8 @@ int runSimulator (SIMoutput& model, char* infile, int nLinIt,
   \arg -nv \a nv : Number of visualization points per knot-span in v-direction
   \arg -nw \a nw : Number of visualization points per knot-span in w-direction
   \arg -hdf5 : Write primary and projected secondary solution to HDF5 file
+  \arg -printMax : Print out maximum point-wise stresses
+  \arg -printMaxPatch : Print out patch-wise maximum point-wise stresses
   \arg -saveInc \a dtSave : Time increment between each result save to VTF/HDF5
   \arg -outPrec \a nDigit : Number of digits in solution component printout
   \arg -ztol \a eps : Zero tolerance for printing of solution norms
@@ -192,13 +205,14 @@ int main (int argc, char** argv)
   double zero_tol = 1.0e-8;
   double stopTime = 0.0;
   bool useFbirth = false;
+  char printMax = false;
   SIMargsBase args("finitedeformation");
 
   IFEM::Init(argc,argv,"Concrete 3D printing simulator");
 
   // Lambda function for parsing the options not stored in SIMargsBase.
   auto external_args = [argc,argv,&nLinIt,&outPrec,&zero_tol,&stopTime,
-                        &useFbirth](int& i) -> bool
+                        &useFbirth,&printMax](int& i) -> bool
   {
     if (!strcmp(argv[i],"-incnl2"))
       ASM::includeNeighbor_L2 = true;
@@ -214,6 +228,10 @@ int main (int argc, char** argv)
       nLinIt = atoi(argv[++i]);
     else if (!strcmp(argv[i],"-Fbirth"))
       useFbirth = true;
+    else if (!strcmp(argv[i],"-printMax"))
+      printMax = 'G';
+    else if (!strcmp(argv[i],"-printMaxPatch"))
+      printMax = 'P';
     else
       return false;
     return true;
@@ -228,7 +246,8 @@ int main (int argc, char** argv)
               <<"       [-vtf <format> [-nviz <nviz>]"
               <<" [-nu <nu>] [-nv <nv>] [-nw <nw>]]\n"
               <<"       [-saveInc <dtSave>] [-check] [-stopTime <t>]\n"
-              <<"       [-nLinIt <n>|-Fbirth] [-outPrec <nd>] [-ztol <eps>]\n";
+              <<"       [-nLinIt <n>|-Fbirth] [-outPrec <nd>] [-ztol <eps>]\n"
+              <<"       [-printMax[Patch]]\n";
     return 0;
   }
 
@@ -243,11 +262,11 @@ int main (int argc, char** argv)
   if (args.dim == 2)
   {
     SIM3DPrinter<SIM2D> model(useFbirth);
-    return runSimulator(model,infile,nLinIt,stopTime,zero_tol,outPrec);
+    return runSimulator(model,infile,nLinIt,printMax,stopTime,zero_tol,outPrec);
   }
   else
   {
     SIM3DPrinter<SIM3D> model(useFbirth);
-    return runSimulator(model,infile,nLinIt,stopTime,zero_tol,outPrec);
+    return runSimulator(model,infile,nLinIt,printMax,stopTime,zero_tol,outPrec);
   }
 }
