@@ -146,8 +146,9 @@ double DruckerPrager::getInternalVar (int idx, char* label, size_t) const
 {
   if (idx < 1 || idx > this->getNoIntVariables())
   {
+    // Unknown variable
     if (label)
-      strcpy(label,"zero");
+      strncpy(label,"zero",MAX_LABEL_LENGTH);
     return 0.0;
   }
 
@@ -184,29 +185,29 @@ double DruckerPrager::getInternalVar (int idx, char* label, size_t) const
   };
 
   switch (idx) {
-  case 1:
+  case 1: // Drucker-Prager stress messure
     if (label)
-      strcpy(label,"sigma(DP)"); // Drucker-Prager stress messure
+      strncpy(label,"sigma(DP)",MAX_LABEL_LENGTH);
     else if (version == 'A')
       return DPstressA(mySigma);
     else
       return DPstressC(mySigma);
     break;
-  case 2:
+  case 2: // Youngs modules
     if (label)
-      strcpy(label,"Youngs modulus");
+      strncpy(label,"Youngs modulus",MAX_LABEL_LENGTH);
     else
       return Emod;
     break;
-  case 3:
+  case 3: // Yield limit (compression)
     if (label)
-      strcpy(label,"Yield limit");
+      strncpy(label,"Yield limit",MAX_LABEL_LENGTH);
     else
       return sigy;
     break;
-  case 4:
+  case 4: // Relative yield utilization (in % of yield limit)
     if (label)
-      strcpy(label,"Yield utilization");
+      strncpy(label,"Yield utilization",MAX_LABEL_LENGTH);
     else if (sigy > 0.0)
     {
       const double osqrt3 = 1.0/sqrt(3.0);
@@ -216,9 +217,9 @@ double DruckerPrager::getInternalVar (int idx, char* label, size_t) const
         return 100.0*DPstressC(mySigma)/((alpha+osqrt3)*sigy);
     }
     break;
-  case 5:
+  case 5: // Alternative yield utilization (sigma_zz in % of yield limit)
     if (label)
-      strcpy(label,"Yield ratio (s_zz/s_yield) compression");
+      strncpy(label,"Yield ratio (s_zz/s_yield) compression",MAX_LABEL_LENGTH);
     else if (sigy > 0.0 && mySigma.dim() == 3 && mySigma(3,3) < 0.0)
       return -100.0*mySigma(3,3)/sigy;
     break;
